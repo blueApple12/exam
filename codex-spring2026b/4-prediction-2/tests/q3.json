@@ -1,0 +1,194 @@
+[
+  {
+    "name": "case-01",
+    "args": {
+      "s": "a"
+    },
+    "stdin": "1\na\n",
+    "expect": "0\na"
+  },
+  {
+    "name": "case-02",
+    "args": {
+      "s": "aa"
+    },
+    "stdin": "2\naa\n",
+    "expect": "1\na"
+  },
+  {
+    "name": "case-03",
+    "args": {
+      "s": "ab"
+    },
+    "stdin": "2\nab\n",
+    "expect": "0\nab"
+  },
+  {
+    "name": "case-04",
+    "args": {
+      "s": "ba"
+    },
+    "stdin": "2\nba\n",
+    "expect": "0\nba"
+  },
+  {
+    "name": "case-05",
+    "args": {
+      "s": "abba"
+    },
+    "stdin": "4\nabba\n",
+    "expect": "2\nba"
+  },
+  {
+    "name": "case-06",
+    "args": {
+      "s": "abbaca"
+    },
+    "stdin": "6\nabbaca\n",
+    "expect": "3\nbca"
+  },
+  {
+    "name": "case-07",
+    "args": {
+      "s": "cbacdcbc"
+    },
+    "stdin": "8\ncbacdcbc\n",
+    "expect": "4\nadbc"
+  },
+  {
+    "name": "case-08",
+    "args": {
+      "s": "bbbaa"
+    },
+    "stdin": "5\nbbbaa\n",
+    "expect": "3\nba"
+  },
+  {
+    "name": "case-09",
+    "args": {
+      "s": "abababa"
+    },
+    "stdin": "7\nabababa\n",
+    "expect": "5\nba"
+  },
+  {
+    "name": "case-10",
+    "args": {
+      "s": "dcba"
+    },
+    "stdin": "4\ndcba\n",
+    "expect": "0\ndcba"
+  },
+  {
+    "name": "case-11",
+    "args": {
+      "s": "abcabc"
+    },
+    "stdin": "6\nabcabc\n",
+    "expect": "3\nabc"
+  },
+  {
+    "name": "case-12",
+    "args": {
+      "s": "zzzz"
+    },
+    "stdin": "4\nzzzz\n",
+    "expect": "3\nz"
+  },
+  {
+    "name": "case-13",
+    "args": {
+      "s": "bdaad"
+    },
+    "stdin": "5\nbdaad\n",
+    "expect": "2\nbad"
+  },
+  {
+    "name": "case-14",
+    "args": {
+      "s": "abdddbc"
+    },
+    "stdin": "7\nabdddbc\n",
+    "expect": "3\nadbc"
+  },
+  {
+    "name": "case-15",
+    "args": {
+      "s": "dcd"
+    },
+    "stdin": "3\ndcd\n",
+    "expect": "1\ncd"
+  },
+  {
+    "name": "case-16",
+    "args": {
+      "s": "cbd"
+    },
+    "stdin": "3\ncbd\n",
+    "expect": "0\ncbd"
+  },
+  {
+    "name": "case-17",
+    "args": {
+      "s": "cdbcbdb"
+    },
+    "stdin": "7\ncdbcbdb\n",
+    "expect": "4\ncdb"
+  },
+  {
+    "name": "case-18",
+    "args": {
+      "s": "dcaadcd"
+    },
+    "stdin": "7\ndcaadcd\n",
+    "expect": "4\nacd"
+  },
+  {
+    "name": "case-19",
+    "args": {
+      "s": "bc"
+    },
+    "stdin": "2\nbc\n",
+    "expect": "0\nbc"
+  },
+  {
+    "name": "case-20",
+    "args": {
+      "s": "dcbbdbd"
+    },
+    "stdin": "7\ndcbbdbd\n",
+    "expect": "4\ncbd"
+  },
+  {
+    "name": "case-21",
+    "args": {
+      "s": "c"
+    },
+    "stdin": "1\nc\n",
+    "expect": "0\nc"
+  },
+  {
+    "name": "case-22",
+    "args": {
+      "s": "dbd"
+    },
+    "stdin": "3\ndbd\n",
+    "expect": "1\nbd"
+  },
+  {
+    "name": "case-23",
+    "args": {
+      "s": "ccdad"
+    },
+    "stdin": "5\nccdad\n",
+    "expect": "2\ncad"
+  },
+  {
+    "name": "case-24",
+    "args": {
+      "s": "db"
+    },
+    "stdin": "2\ndb\n",
+    "expect": "0\ndb"
+  }
+]
