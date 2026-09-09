@@ -429,9 +429,11 @@ textarea.paste{width:100%;height:130px;font-family:"JetBrains Mono",monospace;fo
 }</pre>
       <p><strong>ב.</strong></p>
 <pre class="snip">int f2(int n) {
-    if (n &lt;= 1) return 1;
+    if (n &lt;= 1)
+        return 1;
     int* a = malloc(n * sizeof(int));
-    if (!a) return 0;
+    if (!a)
+        return 0;
     int r = f2(n / 2) + f2(n / 2);
     free(a);
     return r;
@@ -1498,12 +1500,13 @@ int examB_q4(int* arr, int n) {
 /* ==== EXAM-SPECIFIC: SOLUTIONS (replace) ==== */
 const SOLUTIONS = {
   q2: {
-    archetype: "הקשה ביותר · Claude · שאלה 2",
-    complexity: "ראו את דף השאלות",
+    archetype: "הפעלת תמורה במקום — מעקב מחזורים עם סימון in-place. הקושי: להזיז לאורך מחזור בלי מערך עזר ובלי לאבד ערך.",
+    complexity: "זמן Θ(n) - מקום נוסף Θ(1)",
     code: `int examB_q2(int* a, int* b, int n) {
     int cycles = 0;
     for (int i = 0; i < n; i++) {
-        if (b[i] < 0) continue;
+        if (b[i] < 0)
+            continue;
         cycles++;
         int j = i;
         int carried = a[i];
@@ -1518,13 +1521,14 @@ const SOLUTIONS = {
             j = src;
         }
     }
-    for (int i = 0; i < n; i++) b[i] = -1 - b[i];
+    for (int i = 0; i < n; i++)
+        b[i] = -1 - b[i];
     return cycles;
 }`
   },
   q3: {
-    archetype: "הקשה ביותר · Claude · שאלה 3",
-    complexity: "ראו את דף השאלות",
+    archetype: "תת-הסדרה הקטנה לקסיקוגרפית עם כל האותיות — מחסנית חמדנית: מוציאים אות גדולה יותר אם היא עוד תופיע בהמשך. p משמש כמחסנית.",
+    complexity: "זמן Θ(n) - מקום נוסף Θ(1)",
     code: `int examB_q3(char* s, char* p) {
     int last[26] = {0}, used[26] = {0};
     int n = 0;
@@ -1535,7 +1539,8 @@ const SOLUTIONS = {
     int top = 0;
     for (int i = 0; i < n; i++) {
         int c = s[i] - 'a';
-        if (used[c]) continue;
+        if (used[c])
+            continue;
         while (top > 0 && p[top - 1] > s[i] && last[p[top - 1] - 'a'] > i) {
             used[p[top - 1] - 'a'] = 0;
             top--;
@@ -1548,16 +1553,17 @@ const SOLUTIONS = {
 }`
   },
   q4: {
-    archetype: "הקשה ביותר · Claude · שאלה 4",
-    complexity: "ראו את דף השאלות",
+    archetype: "סכום מרבי בתת-מערך רציף — שתי רקורסיות: אחת לסכום המרבי שמסתיים באיבר האחרון, ואחת למקסימום הכללי.",
+    complexity: "אין דרישת סיבוכיות",
     code: `int endAt(int* arr, int n) {
-    if (n == 1) return arr[0];
+    if (n == 1)
+        return arr[0];
     int prev = endAt(arr, n - 1);
     return prev > 0 ? prev + arr[n - 1] : arr[n - 1];
 }
-
 int examB_q4(int* arr, int n) {
-    if (n <= 1) return arr[0];
+    if (n <= 1)
+        return arr[0];
     int best = examB_q4(arr, n - 1);
     int here = endAt(arr, n);
     return here > best ? here : best;

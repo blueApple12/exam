@@ -429,10 +429,13 @@ textarea.paste{width:100%;height:130px;font-family:"JetBrains Mono",monospace;fo
 }</pre>
       <p><strong>ב.</strong></p>
 <pre class="snip">int f2(int n) {
-    if (n &lt;= 1) return 1;
+    if (n &lt;= 1)
+        return 1;
     int* a = malloc(n * sizeof(int));
-    if (!a) return 0;
-    for (int i = 0; i &lt; n; i++) a[i] = i;
+    if (!a)
+        return 0;
+    for (int i = 0; i &lt; n; i++)
+        a[i] = i;
     free(a);
     return f2(n - 1);
 }</pre>
@@ -1497,27 +1500,30 @@ int examB_q4(int* arr, int n) {
 /* ==== EXAM-SPECIFIC: SOLUTIONS (replace) ==== */
 const SOLUTIONS = {
   q2: {
-    archetype: "תחזית 3 · Claude · שאלה 2",
-    complexity: "ראו את דף השאלות",
+    archetype: "הסרת ערכים המופיעים ב-b — שני מצביעים על שני מערכים ממוינים + מצביע כתיבה שלישי. הזנב חייב להיות מוגדר.",
+    complexity: "זמן Θ(n) - מקום נוסף Θ(1)",
     code: `int examB_q2(int* a, int* b, int n) {
     int i = 0, j = 0, w = 0;
     while (i < n) {
-        while (j < n && b[j] < a[i]) j++;
+        while (j < n && b[j] < a[i])
+            j++;
         if (j < n && b[j] == a[i]) {
             i++;
-        } else {
+        }
+        else {
             a[w] = a[i];
             w++;
             i++;
         }
     }
-    for (int k = w; k < n; k++) a[k] = -1;
+    for (int k = w; k < n; k++)
+        a[k] = -1;
     return w;
 }`
   },
   q3: {
-    archetype: "תחזית 3 · Claude · שאלה 3",
-    complexity: "ראו את דף השאלות",
+    archetype: "כיווץ רצפים — העתקה של תו רק אם הוא שונה מהתו שנכתב לפניו.",
+    complexity: "זמן Θ(n) - מקום נוסף Θ(1)",
     code: `int examB_q3(char* s, char* p) {
     int k = 0;
     for (int i = 0; s[i] != '\\0'; i++) {
@@ -1531,19 +1537,22 @@ const SOLUTIONS = {
 }`
   },
   q4: {
-    archetype: "תחזית 3 · Claude · שאלה 4",
-    complexity: "ראו את דף השאלות",
+    archetype: "ספירת שיאים — פונקציית עזר למקסימום של קידומת, ורקורסיה לספירה.",
+    complexity: "אין דרישת סיבוכיות",
     code: `int prefMax(int* arr, int n) {
-    if (n == 1) return arr[0];
+    if (n == 1)
+        return arr[0];
     int r = prefMax(arr, n - 1);
     return arr[n - 1] > r ? arr[n - 1] : r;
 }
-
 int examB_q4(int* arr, int n) {
-    if (n <= 0) return 0;
-    if (n == 1) return 1;
+    if (n <= 0)
+        return 0;
+    if (n == 1)
+        return 1;
     int rest = examB_q4(arr, n - 1);
-    if (arr[n - 1] > prefMax(arr, n - 1)) return rest + 1;
+    if (arr[n - 1] > prefMax(arr, n - 1))
+        return rest + 1;
     return rest;
 }`
   },

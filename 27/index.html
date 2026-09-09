@@ -420,8 +420,8 @@ textarea.paste{width:100%;height:130px;font-family:"JetBrains Mono",monospace;fo
       <p>לכל קטע יש לקבוע סיבוכיות זמן ומקום נוסף הדוקה Θ. כל סעיף שווה שליש מניקוד השאלה. יש להניח n חיובי, פעולות ו-printf/free/malloc בזמן קבוע, הקצאה של k איברים תופסת Θ(k) מקום, והקצאות מצליחות. יש לכלול את מחסנית הרקורסיה; אין להניח אופטימיזציית זנב. מנתחים את הקוד במודל הרגיל ללא גלישת מספרים וללא אופטימיזציות מהדר.</p>
       <p><strong>סעיף א</strong></p>
 <pre class="snip">void f1(int n) {
-    for (int i = 1; i &lt;= n; i*=2)
-        for (int j = i; j &lt;= n; j*=2)
+    for (int i = 1; i &lt;= n; i *= 2)
+        for (int j = i; j &lt;= n; j *= 2)
             printf("*");
 }</pre>
       <div class="req"><b>דרישות סיבוכיות</b><span class="val">זמן: ________ · מקום: ________</span></div>
@@ -1670,37 +1670,54 @@ int examB_q4(int* arr, int n) {
 /* ==== EXAM-SPECIFIC: SOLUTIONS (replace) ==== */
 const SOLUTIONS = {
   q2: {
-    archetype: "תחזית 2 · Codex · שאלה 2",
-    complexity: "ראו את דף השאלות",
-    code: `int examB_q2(int* a,int* b,int n){
-    int count=0;
-    for(int i=0;i<n;i++){
-        int x=a[i],lo=0,hi=n;
-        while(lo<hi){int m=lo+(hi-lo)/2;if(b[m]<x)lo=m+1;else hi=m;}
-        if(lo<n && b[lo]==x)count++;
-        a[i]=lo;
+    archetype: "Lower bound counts strict predecessors even with duplicates.",
+    complexity: "O(n log(n+1)) / O(1)",
+    code: `int examB_q2(int* a, int* b, int n) {
+    int count = 0;
+    for (int i = 0; i < n; i++) {
+        int x = a[i], lo = 0, hi = n;
+        while (lo < hi) {
+            int m = lo+(hi-lo)/2;
+            if (b[m] < x)
+                lo = m+1;
+            else hi = m;
+        }
+        if (lo < n && b[lo] == x)
+            count++;
+        a[i] = lo;
     }
     return count;
 }`
   },
   q3: {
-    archetype: "תחזית 2 · Codex · שאלה 3",
-    complexity: "ראו את דף השאלות",
-    code: `int examB_q3(char* s,char* p){
-    int left[26]={0},n=0,w=0;
-    while(s[n]){left[s[n]-'a']++;n++;}
-    for(int i=0;i<n;i++)if(--left[s[i]-'a']==0)p[w++]=s[i];
-    p[w]='\\0';return n-w;
+    archetype: "Count remaining occurrences and emit exactly when the count becomes zero.",
+    complexity: "O(n) / O(1)",
+    code: `int examB_q3(char* s, char* p) {
+    int left[26] = {0}, n = 0, w = 0;
+    while (s[n]) {
+        left[s[n]-'a']++;
+        n++;
+    }
+    for (int i = 0; i < n; i++)
+        if (--left[s[i]-'a'] == 0)
+            p[w++] = s[i];
+    p[w] = '\\0';
+    return n-w;
 }`
   },
   q4: {
-    archetype: "תחזית 2 · Codex · שאלה 4",
-    complexity: "ראו את דף השאלות",
-    code: `int end_run(int* a,int n){if(n<2 || a[n-2]>=a[n-1])return 1;return 1+end_run(a,n-1);}
-int examB_q4(int* arr,int n){
-    if(n<2)return n;
-    int best=examB_q4(arr,n-1),last=end_run(arr,n);
-    return best>last?best:last;
+    archetype: "Separate the best run in the prefix from the run ending at the last element.",
+    complexity: "No required bound; O(n²) time / O(n) stack",
+    code: `int end_run(int* a, int n) {
+    if (n < 2 || a[n-2] >= a[n-1])
+        return 1;
+    return 1+end_run(a, n-1);
+}
+int examB_q4(int* arr, int n) {
+    if (n < 2)
+        return n;
+    int best = examB_q4(arr, n-1), last = end_run(arr, n);
+    return best > last ? best : last;
 }`
   },
 };

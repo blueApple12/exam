@@ -1672,43 +1672,69 @@ int examB_q4(int* arr, int n) {
 /* ==== EXAM-SPECIFIC: SOLUTIONS (replace) ==== */
 const SOLUTIONS = {
   q2: {
-    archetype: "תחזית 1 · Codex · שאלה 2",
-    complexity: "ראו את דף השאלות",
-    code: `int examB_q2(int* a,int* b,int n){
-    int carry=0;
-    for(int i=n-1;i>=0;i--){int t=a[i]+b[i]+carry;a[i]=t%10;carry=t/10;}
+    archetype: "Process from least to most significant.",
+    complexity: "O(n) / O(1)",
+    code: `int examB_q2(int* a, int* b, int n) {
+    int carry = 0;
+    for (int i = n-1; i >= 0; i--) {
+        int t = a[i]+b[i]+carry;
+        a[i] = t%10;
+        carry = t/10;
+    }
     return carry;
 }`
   },
   q3: {
-    archetype: "תחזית 1 · Codex · שאלה 3",
-    complexity: "ראו את דף השאלות",
-    code: `int can_finish(int* c,int n,int previous){
-    for(int x=0;x<26;x++)if(c[x]>(x==previous?n/2:(n+1)/2))return 0;
+    archetype: "Try the smallest next letter that leaves a feasible suffix.",
+    complexity: "O(n) / O(1), fixed 26-letter alphabet",
+    code: `int can_finish(int* c, int n, int previous) {
+    for (int x = 0; x < 26; x++)
+        if (c[x] > (x == previous ? n/2 : (n+1)/2))
+            return 0;
     return 1;
 }
-int examB_q3(char* s,char* p){
-    int c[26]={0},n=0;
-    while(s[n]){c[s[n]-'a']++;n++;}
-    int previous=-1;
-    for(int i=0;i<n;i++){
-        int chosen=-1;
-        for(int x=0;x<26;x++)if(c[x]>0 && x!=previous){
-            c[x]--;
-            if(can_finish(c,n-i-1,x)){chosen=x;break;}
-            c[x]++;
-        }
-        if(chosen<0){p[0]='\\0';return 0;}
-        p[i]=(char)('a'+chosen);previous=chosen;
+int examB_q3(char* s, char* p) {
+    int c[26] = {0}, n = 0;
+    while (s[n]) {
+        c[s[n]-'a']++;
+        n++;
     }
-    p[n]='\\0';return 1;
+    int previous = -1;
+    for (int i = 0; i < n; i++) {
+        int chosen = -1;
+        for (int x = 0; x < 26; x++)
+            if (c[x] > 0 && x != previous) {
+                c[x]--;
+                if (can_finish(c, n-i-1, x)) {
+                    chosen = x;
+                    break;
+                }
+                c[x]++;
+            }
+        if (chosen < 0) {
+            p[0] = '\\0';
+            return 0;
+        }
+        p[i] = (char)('a'+chosen);
+        previous = chosen;
+    }
+    p[n] = '\\0';
+    return 1;
 }`
   },
   q4: {
-    archetype: "תחזית 1 · Codex · שאלה 4",
-    complexity: "ראו את דף השאלות",
-    code: `int end_run(int* a,int n){if(n<2 || a[n-2]>=a[n-1])return 1;return 1+end_run(a,n-1);}
-int examB_q4(int* arr,int n){if(n<2)return 0;return examB_q4(arr,n-1)+end_run(arr,n)-1;}`
+    archetype: "Every interval either ends before the last position or ends there.",
+    complexity: "No required bound; O(n²) time / O(n) stack",
+    code: `int end_run(int* a, int n) {
+    if (n < 2 || a[n-2] >= a[n-1])
+        return 1;
+    return 1+end_run(a, n-1);
+}
+int examB_q4(int* arr, int n) {
+    if (n < 2)
+        return 0;
+    return examB_q4(arr, n-1)+end_run(arr, n)-1;
+}`
   },
 };
 

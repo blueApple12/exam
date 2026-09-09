@@ -421,7 +421,7 @@ textarea.paste{width:100%;height:130px;font-family:"JetBrains Mono",monospace;fo
       <p><strong>סעיף א</strong></p>
 <pre class="snip">void f1(int n) {
     for (int i = 2; i*i &lt;= n; i++)
-        for (int j = 1; j &lt;= n; j*=2)
+        for (int j = 1; j &lt;= n; j *= 2)
             printf("*");
 }</pre>
       <div class="req"><b>דרישות סיבוכיות</b><span class="val">זמן: ________ · מקום: ________</span></div>
@@ -437,7 +437,7 @@ textarea.paste{width:100%;height:130px;font-family:"JetBrains Mono",monospace;fo
       <div class="req"><b>דרישות סיבוכיות</b><span class="val">זמן: ________ · מקום: ________</span></div>
       <p><strong>סעיף ג</strong></p>
 <pre class="snip">void f3(int n) {
-    for (int i = 1; i &lt;= n; i*=2) {
+    for (int i = 1; i &lt;= n; i *= 2) {
         int* p = malloc(i*sizeof(int));
         for (int j = 0; j &lt; i; j++)
             p[j] = j;
@@ -1668,38 +1668,62 @@ int examB_q4(int* arr, int n) {
 /* ==== EXAM-SPECIFIC: SOLUTIONS (replace) ==== */
 const SOLUTIONS = {
   q2: {
-    archetype: "תחזית 3 · Codex · שאלה 2",
-    complexity: "ראו את דף השאלות",
-    code: `int examB_q2(int* a,int* b,int n){
-    int i=0,j=0,w=0;
-    while(i<n){
-        while(j<n && b[j]<a[i])j++;
-        if(j<n && b[j]==a[i]){i++;j++;}
-        else a[w++]=a[i++];
+    archetype: "Consume each occurrence in b at most once.",
+    complexity: "O(n) / O(1)",
+    code: `int examB_q2(int* a, int* b, int n) {
+    int i = 0, j = 0, w = 0;
+    while (i < n) {
+        while (j < n && b[j] < a[i])
+            j++;
+        if (j < n && b[j] == a[i]) {
+            i++;
+            j++;
+        }
+        else a[w++] = a[i++];
     }
-    for(int k=w;k<n;k++)a[k]=0;
+    for (int k = w; k < n; k++)
+        a[k] = 0;
     return w;
 }`
   },
   q3: {
-    archetype: "תחזית 3 · Codex · שאלה 3",
-    complexity: "ראו את דף השאלות",
-    code: `int examB_q3(char* s,char* p){
-    int last[26],left=0,best=0,start=0;
-    for(int x=0;x<26;x++)last[x]=-1;
-    for(int i=0;s[i];i++){
-        int x=s[i]-'a';if(last[x]>=left)left=last[x]+1;last[x]=i;
-        if(i-left+1>best){best=i-left+1;start=left;}
+    archetype: "The left boundary only moves forward.",
+    complexity: "O(n) / O(1)",
+    code: `int examB_q3(char* s, char* p) {
+    int last[26], left = 0, best = 0, start = 0;
+    for (int x = 0; x < 26; x++)
+        last[x] = -1;
+    for (int i = 0; s[i]; i++) {
+        int x = s[i]-'a';
+        if (last[x] >= left)
+            left = last[x]+1;
+        last[x] = i;
+        if (i-left+1 > best) {
+            best = i-left+1;
+            start = left;
+        }
     }
-    for(int i=0;i<best;i++){p[i]=s[start+i];}
-    p[best]='\\0';return best;
+    for (int i = 0; i < best; i++) {
+        p[i] = s[start+i];
+    }
+    p[best] = '\\0';
+    return best;
 }`
   },
   q4: {
-    archetype: "תחזית 3 · Codex · שאלה 4",
-    complexity: "ראו את דף השאלות",
-    code: `int prefix_max(int* a,int n){if(n==1)return a[0];int m=prefix_max(a,n-1);return m>a[n-1]?m:a[n-1];}
-int examB_q4(int* arr,int n){if(n<2)return n;return examB_q4(arr,n-1)+(arr[n-1]>prefix_max(arr,n-1));}`
+    archetype: "Compare the last value with the maximum of the entire earlier prefix, not merely its predecessor.",
+    complexity: "No required bound; O(n²) time / O(n) stack",
+    code: `int prefix_max(int* a, int n) {
+    if (n == 1)
+        return a[0];
+    int m = prefix_max(a, n-1);
+    return m > a[n-1] ? m : a[n-1];
+}
+int examB_q4(int* arr, int n) {
+    if (n < 2)
+        return n;
+    return examB_q4(arr, n-1)+(arr[n-1] > prefix_max(arr, n-1));
+}`
   },
 };
 

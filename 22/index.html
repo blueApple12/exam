@@ -434,7 +434,8 @@ textarea.paste{width:100%;height:130px;font-family:"JetBrains Mono",monospace;fo
 <pre class="snip">void f2(int n) {
     for (int i = n; i &gt; 0; i /= 2) {
         int* p = malloc(i * sizeof(int));
-        if (!p) return;
+        if (!p)
+            return;
         for (int j = 0; j &lt; i; j++)
             printf("*");
         free(p);
@@ -1499,50 +1500,57 @@ int examB_q4(int* arr, int n) {
 /* ==== EXAM-SPECIFIC: SOLUTIONS (replace) ==== */
 const SOLUTIONS = {
   q2: {
-    archetype: "תחזית 2 · Claude · שאלה 2",
-    complexity: "ראו את דף השאלות",
+    archetype: "דירוג כל איבר מול מערך ממוין — חיפוש בינארי לגבול העליון, בתוך לולאה על a. שימו לב לקרוא את a[i] לפני הדריסה.",
+    complexity: "זמן Θ(n log n) - מקום נוסף Θ(1)",
     code: `int examB_q2(int* a, int* b, int n) {
     int zeros = 0;
     for (int i = 0; i < n; i++) {
         int lo = 0, hi = n;
         while (lo < hi) {
             int mid = lo + (hi - lo) / 2;
-            if (b[mid] <= a[i]) lo = mid + 1;
+            if (b[mid] <= a[i])
+                lo = mid + 1;
             else hi = mid;
         }
         a[i] = lo;
-        if (lo == 0) zeros++;
+        if (lo == 0)
+            zeros++;
     }
     return zeros;
 }`
   },
   q3: {
-    archetype: "תחזית 2 · Claude · שאלה 3",
-    complexity: "ראו את דף השאלות",
+    archetype: "התת-מחרוזת הארוכה ללא תו חוזר — חלון מחליק: מקדמים את השמאל עד שהתו החוזר יוצא מהחלון.",
+    complexity: "זמן Θ(n) - מקום נוסף Θ(1)",
     code: `int examB_q3(char* s, char* p) {
     int lastPos[26];
-    for (int c = 0; c < 26; c++) lastPos[c] = -1;
+    for (int c = 0; c < 26; c++)
+        lastPos[c] = -1;
     int bestLen = 0, bestStart = 0, start = 0;
     for (int i = 0; s[i] != '\\0'; i++) {
         int c = s[i] - 'a';
-        if (lastPos[c] >= start) start = lastPos[c] + 1;
+        if (lastPos[c] >= start)
+            start = lastPos[c] + 1;
         lastPos[c] = i;
         if (i - start + 1 > bestLen) {
             bestLen = i - start + 1;
             bestStart = start;
         }
     }
-    for (int k = 0; k < bestLen; k++) p[k] = s[bestStart + k];
+    for (int k = 0; k < bestLen; k++)
+        p[k] = s[bestStart + k];
     p[bestLen] = '\\0';
     return bestLen;
 }`
   },
   q4: {
-    archetype: "תחזית 2 · Claude · שאלה 4",
-    complexity: "ראו את דף השאלות",
+    archetype: "בדיקת פלינדרום — משווים קצה לקצה ומכווצים. בלי מעטפת: משתמשים ב-arr+1 ובאורך n-2.",
+    complexity: "אין דרישת סיבוכיות",
     code: `int examB_q4(int* arr, int n) {
-    if (n <= 1) return 1;
-    if (arr[0] != arr[n - 1]) return 0;
+    if (n <= 1)
+        return 1;
+    if (arr[0] != arr[n - 1])
+        return 0;
     return examB_q4(arr + 1, n - 2);
 }`
   },

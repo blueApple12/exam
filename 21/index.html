@@ -429,9 +429,11 @@ textarea.paste{width:100%;height:130px;font-family:"JetBrains Mono",monospace;fo
 }</pre>
       <p><strong>ב.</strong></p>
 <pre class="snip">int f2(int n) {
-    if (n &lt;= 1) return 1;
+    if (n &lt;= 1)
+        return 1;
     int* a = malloc(n * sizeof(int));
-    if (!a) return 0;
+    if (!a)
+        return 0;
     int r = f2(n - 1);
     free(a);
     return r;
@@ -1500,8 +1502,8 @@ int examB_q4(int* arr, int n) {
 /* ==== EXAM-SPECIFIC: SOLUTIONS (replace) ==== */
 const SOLUTIONS = {
   q2: {
-    archetype: "תחזית 1 · Claude · שאלה 2",
-    complexity: "ראו את דף השאלות",
+    archetype: "חיבור מספרים ארוכים — מעבר מהסוף להתחלה עם נשיאה. הקלאסיקה של הקורס למערכים.",
+    complexity: "זמן Θ(n) - מקום נוסף Θ(1)",
     code: `int examB_q2(int* a, int* b, int n) {
     int carry = 0;
     for (int i = n - 1; i >= 0; i--) {
@@ -1513,8 +1515,8 @@ const SOLUTIONS = {
 }`
   },
   q3: {
-    archetype: "תחזית 1 · Claude · שאלה 3",
-    complexity: "ראו את דף השאלות",
+    archetype: "הסרת אותיות כפולות — טבלת seen בגודל 26 נחשבת Θ(1). מעבר לינארי אחד.",
+    complexity: "זמן Θ(n) - מקום נוסף Θ(1)",
     code: `int examB_q3(char* s, char* p) {
     int seen[26] = {0};
     int k = 0;
@@ -1530,16 +1532,18 @@ const SOLUTIONS = {
 }`
   },
   q4: {
-    archetype: "תחזית 1 · Claude · שאלה 4",
-    complexity: "ראו את דף השאלות",
+    archetype: "הרצף העולה הארוך ביותר — פונקציית עזר לאורך הרצף שמסתיים באיבר האחרון, ורקורסיה למקסימום.",
+    complexity: "אין דרישת סיבוכיות",
     code: `int runEnd(int* arr, int n) {
-    if (n == 1) return 1;
-    if (arr[n - 1] > arr[n - 2]) return runEnd(arr, n - 1) + 1;
+    if (n == 1)
+        return 1;
+    if (arr[n - 1] > arr[n - 2])
+        return runEnd(arr, n - 1) + 1;
     return 1;
 }
-
 int examB_q4(int* arr, int n) {
-    if (n <= 1) return n;
+    if (n <= 1)
+        return n;
     int best = examB_q4(arr, n - 1);
     int here = runEnd(arr, n);
     return here > best ? here : best;

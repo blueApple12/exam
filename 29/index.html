@@ -420,7 +420,7 @@ textarea.paste{width:100%;height:130px;font-family:"JetBrains Mono",monospace;fo
       <p>לכל קטע יש לקבוע סיבוכיות זמן ומקום נוסף הדוקה Θ. כל סעיף שווה שליש מניקוד השאלה. יש להניח n חיובי, פעולות ו-printf/free/malloc בזמן קבוע, הקצאה של k איברים תופסת Θ(k) מקום, והקצאות מצליחות. יש לכלול את מחסנית הרקורסיה; אין להניח אופטימיזציית זנב. מנתחים את הקוד במודל הרגיל ללא גלישת מספרים וללא אופטימיזציות מהדר.</p>
       <p><strong>סעיף א</strong></p>
 <pre class="snip">void f1(int n) {
-    for (int i = 1; i &lt;= n; i*=2)
+    for (int i = 1; i &lt;= n; i *= 2)
         for (int j = 0; j &lt; n; j += i)
             for (int k = 0; k &lt; i; k++)
                 printf("*");
@@ -1671,55 +1671,88 @@ int examB_q4(int* arr, int n) {
 /* ==== EXAM-SPECIFIC: SOLUTIONS (replace) ==== */
 const SOLUTIONS = {
   q2: {
-    archetype: "הקשה ביותר · Codex · שאלה 2",
-    complexity: "ראו את דף השאלות",
+    archetype: "Find the rotation once, then lower-bound each original query in virtual sorted order.",
+    complexity: "O(n log(n+1)) / O(1)",
     code: `int examB_q2(int* a, int* b, int n) {
-    int lo=0, hi=n-1;
-    while(lo<hi){int m=lo+(hi-lo)/2; if(b[m]>b[hi]) lo=m+1; else hi=m;}
-    int pivot=lo, found=0;
-    for(int i=0;i<n;i++){
-        int x=a[i]; lo=0; hi=n;
-        while(lo<hi){int m=lo+(hi-lo)/2; if(b[(pivot+m)%n]<x) lo=m+1; else hi=m;}
+    int lo = 0, hi = n-1;
+    while (lo < hi) {
+        int m = lo+(hi-lo)/2;
+        if (b[m] > b[hi])
+            lo = m+1;
+        else hi = m;
+    }
+    int pivot = lo, found = 0;
+    for (int i = 0; i < n; i++) {
+        int x = a[i];
+        lo = 0;
+        hi = n;
+        while (lo < hi) {
+            int m = lo+(hi-lo)/2;
+            if (b[(pivot+m)%n] < x)
+                lo = m+1;
+            else hi = m;
+        }
         int v;
-        if(lo==0) v=b[pivot];
-        else if(lo==n) v=b[(pivot+n-1)%n];
-        else {int left=b[(pivot+lo-1)%n],right=b[(pivot+lo)%n];v=(x-left<=right-x)?left:right;}
-        if(v==x) found++;
-        a[i]=v;
+        if (lo == 0)
+            v = b[pivot];
+        else if (lo == n) v = b[(pivot+n-1)%n];
+        else {
+            int left = b[(pivot+lo-1)%n], right = b[(pivot+lo)%n];
+            v = (x-left <= right-x) ? left : right;
+        }
+        if (v == x)
+            found++;
+        a[i] = v;
     }
     return found;
 }`
   },
   q3: {
-    archetype: "הקשה ביותר · Codex · שאלה 3",
-    complexity: "ראו את דף השאלות",
+    archetype: "The output acts as a stack.",
+    complexity: "O(n) / O(1), alphabet size 26; p is output",
     code: `int examB_q3(char* s, char* p) {
-    int left[26]={0},used[26]={0},w=0;
-    for(int i=0;s[i];i++) left[s[i]-'a']++;
-    for(int i=0;s[i];i++){
-        int c=s[i]-'a';left[c]--;
-        if(used[c]) continue;
-        while(w>0 && p[w-1]>s[i] && left[p[w-1]-'a']>0) used[p[--w]-'a']=0;
-        p[w++]=s[i];used[c]=1;
+    int left[26] = {0}, used[26] = {0}, w = 0;
+    for (int i = 0; s[i]; i++)
+        left[s[i]-'a']++;
+    for (int i = 0; s[i]; i++) {
+        int c = s[i]-'a';
+        left[c]--;
+        if (used[c])
+            continue;
+        while (w > 0 && p[w-1] > s[i] && left[p[w-1]-'a'] > 0)
+            used[p[--w]-'a'] = 0;
+        p[w++] = s[i];
+        used[c] = 1;
     }
-    p[w]='\\0';return w;
+    p[w] = '\\0';
+    return w;
 }`
   },
   q4: {
-    archetype: "הקשה ביותר · Codex · שאלה 4",
-    complexity: "ראו את דף השאלות",
-    code: `void shift_right(int* a,int j,int i){if(j<=i)return;a[j]=a[j-1];shift_right(a,j-1,i);}
-int merge_count(int* a,int i,int m,int n){
-    if(i>=m || m>=n)return 0;
-    if(a[i]<=a[m])return merge_count(a,i+1,m,n);
-    int v=a[m],cross=m-i;shift_right(a,m,i);a[i]=v;
-    return cross+merge_count(a,i+1,m+1,n);
+    archetype: "After recursive sorting, moving the next right-half element before m−i left elements creates exactly that many strict inversions.",
+    complexity: "No required bound; supplied solution O(n²) time / O(n) stack",
+    code: `void shift_right(int* a, int j, int i) {
+    if (j <= i)
+        return;
+    a[j] = a[j-1];
+    shift_right(a, j-1, i);
 }
-int examB_q4(int* arr,int n){
-    if(n<2)return 0;
-    int m=n/2;
-    int left=examB_q4(arr,m),right=examB_q4(arr+m,n-m);
-    return left+right+merge_count(arr,0,m,n);
+int merge_count(int* a, int i, int m, int n) {
+    if (i >= m || m >= n)
+        return 0;
+    if (a[i] <= a[m])
+        return merge_count(a, i+1, m, n);
+    int v = a[m], cross = m-i;
+    shift_right(a, m, i);
+    a[i] = v;
+    return cross+merge_count(a, i+1, m+1, n);
+}
+int examB_q4(int* arr, int n) {
+    if (n < 2)
+        return 0;
+    int m = n/2;
+    int left = examB_q4(arr, m), right = examB_q4(arr+m, n-m);
+    return left+right+merge_count(arr, 0, m, n);
 }`
   },
 };
