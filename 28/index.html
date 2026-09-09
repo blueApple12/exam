@@ -419,14 +419,33 @@ textarea.paste{width:100%;height:130px;font-family:"JetBrains Mono",monospace;fo
       <h2>שאלה 1 — סיבוכיות (25 נקודות)</h2>
       <p>לכל קטע יש לקבוע סיבוכיות זמן ומקום נוסף הדוקה Θ. כל סעיף שווה שליש מניקוד השאלה. יש להניח n חיובי, פעולות ו-printf/free/malloc בזמן קבוע, הקצאה של k איברים תופסת Θ(k) מקום, והקצאות מצליחות. יש לכלול את מחסנית הרקורסיה; אין להניח אופטימיזציית זנב. מנתחים את הקוד במודל הרגיל ללא גלישת מספרים וללא אופטימיזציות מהדר.</p>
       <p><strong>סעיף א</strong></p>
-<pre class="snip">void f1(int n){for(int i=2;i*i&lt;=n;i++)for(int j=1;j&lt;=n;j*=2)printf("*");}</pre>
+<pre class="snip">void f1(int n) {
+    for (int i = 2; i*i &lt;= n; i++)
+        for (int j = 1; j &lt;= n; j*=2)
+            printf("*");
+}</pre>
       <div class="req"><b>דרישות סיבוכיות</b><span class="val">זמן: ________ · מקום: ________</span></div>
       <p><strong>סעיף ב</strong></p>
-<pre class="snip">void f2(int n){if(n&lt;2)return;for(int i=0;i&lt;n;i++)printf("*");f2(n/2);f2(n/2);}</pre>
+<pre class="snip">void f2(int n) {
+    if (n &lt; 2)
+        return;
+    for (int i = 0; i &lt; n; i++)
+        printf("*");
+    f2(n/2);
+    f2(n/2);
+}</pre>
       <div class="req"><b>דרישות סיבוכיות</b><span class="val">זמן: ________ · מקום: ________</span></div>
       <p><strong>סעיף ג</strong></p>
-<pre class="snip">void f3(int n){for(int i=1;i&lt;=n;i*=2){int* p=malloc(i*sizeof(int));for(int j=0;j&lt;i;j++)p[j]=j;free(p);}}</pre>
+<pre class="snip">void f3(int n) {
+    for (int i = 1; i &lt;= n; i*=2) {
+        int* p = malloc(i*sizeof(int));
+        for (int j = 0; j &lt; i; j++)
+            p[j] = j;
+        free(p);
+    }
+}</pre>
       <div class="req"><b>דרישות סיבוכיות</b><span class="val">זמן: ________ · מקום: ________</span></div>
+      <div class="q1grid" id="q1grid"></div>
     </section>
     <section class="q">
       <h2>שאלה 2 — 25 נקודות</h2>

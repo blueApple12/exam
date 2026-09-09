@@ -1,559 +1,384 @@
 {
-  "version": 2,
-  "questions": {
-    "q2": {
-      "driver": "matrix_rows_int",
-      "mutation": "forbidden",
-      "cases": [
-        {
-          "name": "t01",
-          "args": {
-            "mat": [
-              [
-                1,
-                3,
-                5,
-                7
-              ],
-              [
-                2,
-                4,
-                6,
-                8
-              ],
-              [
-                0,
-                9,
-                10,
-                11
-              ]
-            ],
-            "m": 3,
-            "cols": 4,
-            "value": 5
-          },
-          "expect": "5"
-        },
-        {
-          "name": "t02",
-          "args": {
-            "mat": [
-              [
-                1,
-                3,
-                5,
-                7
-              ],
-              [
-                2,
-                4,
-                6,
-                8
-              ],
-              [
-                0,
-                9,
-                10,
-                11
-              ]
-            ],
-            "m": 3,
-            "cols": 4,
-            "value": 1
-          },
-          "expect": "1"
-        },
-        {
-          "name": "t03",
-          "args": {
-            "mat": [
-              [
-                1,
-                3,
-                5,
-                7
-              ],
-              [
-                2,
-                4,
-                6,
-                8
-              ],
-              [
-                0,
-                9,
-                10,
-                11
-              ]
-            ],
-            "m": 3,
-            "cols": 4,
-            "value": 100
-          },
-          "expect": "12"
-        },
-        {
-          "name": "t04",
-          "args": {
-            "mat": [
-              [
-                1,
-                3,
-                5,
-                7
-              ],
-              [
-                2,
-                4,
-                6,
-                8
-              ],
-              [
-                0,
-                9,
-                10,
-                11
-              ]
-            ],
-            "m": 3,
-            "cols": 4,
-            "value": 0
-          },
-          "expect": "0"
-        },
-        {
-          "name": "t05",
-          "args": {
-            "mat": [
-              [
-                1,
-                3,
-                5,
-                7
-              ],
-              [
-                2,
-                4,
-                6,
-                8
-              ],
-              [
-                0,
-                9,
-                10,
-                11
-              ]
-            ],
-            "m": 3,
-            "cols": 4,
-            "value": 9
-          },
-          "expect": "9"
-        },
-        {
-          "name": "t06",
-          "args": {
-            "mat": [
-              [
-                1,
-                3,
-                5,
-                7
-              ],
-              [
-                2,
-                4,
-                6,
-                8
-              ],
-              [
-                0,
-                9,
-                10,
-                11
-              ]
-            ],
-            "m": 3,
-            "cols": 4,
-            "value": 10
-          },
-          "expect": "10"
-        },
-        {
-          "name": "t07",
-          "args": {
-            "mat": [
-              [
-                1,
-                2,
-                3,
-                4
-              ]
-            ],
-            "m": 1,
-            "cols": 4,
-            "value": 3
-          },
-          "expect": "2"
-        },
-        {
-          "name": "t08",
-          "args": {
-            "mat": [
-              [
-                1,
-                2,
-                3,
-                4
-              ]
-            ],
-            "m": 1,
-            "cols": 4,
-            "value": 5
-          },
-          "expect": "4"
-        },
-        {
-          "name": "t09",
-          "args": {
-            "mat": [
-              [
-                1,
-                2,
-                3,
-                4
-              ]
-            ],
-            "m": 1,
-            "cols": 4,
-            "value": 1
-          },
-          "expect": "0"
-        },
-        {
-          "name": "t10",
-          "args": {
-            "mat": [
-              [
-                -5,
-                -3,
-                0,
-                2
-              ],
-              [
-                1,
-                1,
-                1,
-                1
-              ]
-            ],
-            "m": 2,
-            "cols": 4,
-            "value": 1
-          },
-          "expect": "3"
-        },
-        {
-          "name": "t11",
-          "args": {
-            "mat": [
-              [
-                -5,
-                -3,
-                0,
-                2
-              ],
-              [
-                1,
-                1,
-                1,
-                1
-              ]
-            ],
-            "m": 2,
-            "cols": 4,
-            "value": 2
-          },
-          "expect": "7"
-        },
-        {
-          "name": "t12",
-          "args": {
-            "mat": [
-              [
-                -5,
-                -3,
-                0,
-                2
-              ],
-              [
-                1,
-                1,
-                1,
-                1
-              ]
-            ],
-            "m": 2,
-            "cols": 4,
-            "value": -3
-          },
-          "expect": "1"
-        },
-        {
-          "name": "t13",
-          "args": {
-            "mat": [
-              [
-                5,
-                5,
-                5,
-                5
-              ],
-              [
-                5,
-                5,
-                5,
-                5
-              ]
-            ],
-            "m": 2,
-            "cols": 4,
-            "value": 5
-          },
-          "expect": "0"
-        },
-        {
-          "name": "t14",
-          "args": {
-            "mat": [
-              [
-                5,
-                5,
-                5,
-                5
-              ],
-              [
-                5,
-                5,
-                5,
-                5
-              ]
-            ],
-            "m": 2,
-            "cols": 4,
-            "value": 6
-          },
-          "expect": "8"
-        }
-      ]
+ "version": 2,
+ "fnPrefix": "examB_",
+ "questions": {
+  "q2": {
+   "driver": "raw_main",
+   "mutation": "allowed",
+   "cases": [
+    {
+     "name": "case-01",
+     "stdin": "1\n3\n7\n",
+     "expect": "0\n0"
     },
-    "q3": {
-      "driver": "string_only",
-      "mutation": "forbidden",
-      "cases": [
-        {
-          "name": "t01",
-          "args": {
-            "s": "aab"
-          },
-          "expect": "4"
-        },
-        {
-          "name": "t02",
-          "args": {
-            "s": "abc"
-          },
-          "expect": "3"
-        },
-        {
-          "name": "t03",
-          "args": {
-            "s": "aaa"
-          },
-          "expect": "4"
-        },
-        {
-          "name": "t04",
-          "args": {
-            "s": "a"
-          },
-          "expect": "1"
-        },
-        {
-          "name": "t05",
-          "args": {
-            "s": "abab"
-          },
-          "expect": "6"
-        },
-        {
-          "name": "t06",
-          "args": {
-            "s": "racecar"
-          },
-          "expect": "10"
-        },
-        {
-          "name": "t07",
-          "args": {
-            "s": "banana"
-          },
-          "expect": "11"
-        },
-        {
-          "name": "t08",
-          "args": {
-            "s": "aabb"
-          },
-          "expect": "6"
-        },
-        {
-          "name": "t09",
-          "args": {
-            "s": "xyzzyx"
-          },
-          "expect": "10"
-        },
-        {
-          "name": "t10",
-          "args": {
-            "s": "abcba"
-          },
-          "expect": "7"
-        },
-        {
-          "name": "t11",
-          "args": {
-            "s": "zz"
-          },
-          "expect": "2"
-        },
-        {
-          "name": "t12",
-          "args": {
-            "s": "abcabc"
-          },
-          "expect": "8"
-        },
-        {
-          "name": "t13",
-          "args": {
-            "s": "deeee"
-          },
-          "expect": "9"
-        },
-        {
-          "name": "t14",
-          "args": {
-            "s": "mississippi"
-          },
-          "expect": "33"
-        }
-      ]
+    {
+     "name": "case-02",
+     "stdin": "1\n2\n2\n",
+     "expect": "1\n2"
     },
-    "q4": {
-      "driver": "int_only",
-      "mutation": "forbidden",
-      "cases": [
-        {
-          "name": "t01",
-          "args": {
-            "value": 0
-          },
-          "expect": "1"
-        },
-        {
-          "name": "t02",
-          "args": {
-            "value": 1
-          },
-          "expect": "1"
-        },
-        {
-          "name": "t03",
-          "args": {
-            "value": 2
-          },
-          "expect": "3"
-        },
-        {
-          "name": "t04",
-          "args": {
-            "value": 3
-          },
-          "expect": "5"
-        },
-        {
-          "name": "t05",
-          "args": {
-            "value": 4
-          },
-          "expect": "11"
-        },
-        {
-          "name": "t06",
-          "args": {
-            "value": 5
-          },
-          "expect": "21"
-        },
-        {
-          "name": "t07",
-          "args": {
-            "value": 6
-          },
-          "expect": "43"
-        },
-        {
-          "name": "t08",
-          "args": {
-            "value": 7
-          },
-          "expect": "85"
-        },
-        {
-          "name": "t09",
-          "args": {
-            "value": 8
-          },
-          "expect": "171"
-        },
-        {
-          "name": "t10",
-          "args": {
-            "value": 10
-          },
-          "expect": "683"
-        },
-        {
-          "name": "t11",
-          "args": {
-            "value": 12
-          },
-          "expect": "2731"
-        },
-        {
-          "name": "t12",
-          "args": {
-            "value": 15
-          },
-          "expect": "21845"
-        },
-        {
-          "name": "t13",
-          "args": {
-            "value": 18
-          },
-          "expect": "174763"
-        },
-        {
-          "name": "t14",
-          "args": {
-            "value": 20
-          },
-          "expect": "699051"
-        }
-      ]
+    {
+     "name": "case-03",
+     "stdin": "1\n3\n7\n",
+     "expect": "0\n0"
+    },
+    {
+     "name": "case-04",
+     "stdin": "12\n2 2 3 4 5 5 6 6 7 7 7 7\n2 2 3 4 5 5 6 6 7 7 7 7\n",
+     "expect": "12\n2 2 3 4 5 5 6 6 7 7 7 7"
+    },
+    {
+     "name": "case-05",
+     "stdin": "12\n1 1 1 1 1 1 1 1 1 1 1 1\n9 9 9 9 9 9 9 9 9 9 9 9\n",
+     "expect": "0\n0 0 0 0 0 0 0 0 0 0 0 0"
+    },
+    {
+     "name": "case-06",
+     "stdin": "12\n1 1 1 1 2 2 3 4 5 6 7 7\n1 1 2 2 3 3 5 5 6 6 7 7\n",
+     "expect": "9\n1 1 2 2 3 5 6 7 7 0 0 0"
+    },
+    {
+     "name": "case-07",
+     "stdin": "6\n1 2 4 4 6 6\n1 3 4 5 6 7\n",
+     "expect": "3\n1 4 6 0 0 0"
+    },
+    {
+     "name": "case-08",
+     "stdin": "3\n1 2 4\n5 7 7\n",
+     "expect": "0\n0 0 0"
+    },
+    {
+     "name": "case-09",
+     "stdin": "7\n1 2 3 5 5 5 7\n1 2 3 3 5 6 7\n",
+     "expect": "5\n1 2 3 5 7 0 0"
+    },
+    {
+     "name": "case-10",
+     "stdin": "2\n6 7\n3 4\n",
+     "expect": "0\n0 0"
+    },
+    {
+     "name": "case-11",
+     "stdin": "8\n1 2 3 3 4 5 6 7\n1 2 3 3 4 5 5 5\n",
+     "expect": "6\n1 2 3 3 4 5 0 0"
+    },
+    {
+     "name": "case-12",
+     "stdin": "2\n5 7\n4 6\n",
+     "expect": "0\n0 0"
+    },
+    {
+     "name": "case-13",
+     "stdin": "2\n3 4\n2 3\n",
+     "expect": "1\n3 0"
+    },
+    {
+     "name": "case-14",
+     "stdin": "6\n1 4 4 6 6 6\n2 2 4 5 6 6\n",
+     "expect": "3\n4 6 6 0 0 0"
+    },
+    {
+     "name": "case-15",
+     "stdin": "4\n2 2 3 6\n1 3 6 6\n",
+     "expect": "2\n3 6 0 0"
+    },
+    {
+     "name": "case-16",
+     "stdin": "13\n1 1 1 1 2 2 3 3 4 5 5 7 7\n1 2 2 3 3 3 3 3 4 5 5 5 6\n",
+     "expect": "8\n1 2 2 3 3 4 5 5 0 0 0 0 0"
+    },
+    {
+     "name": "case-17",
+     "stdin": "8\n2 3 3 6 6 6 6 7\n1 3 3 4 4 4 6 7\n",
+     "expect": "4\n3 3 6 7 0 0 0 0"
+    },
+    {
+     "name": "case-18",
+     "stdin": "9\n1 2 3 4 4 4 5 5 7\n1 2 2 2 3 4 4 6 7\n",
+     "expect": "6\n1 2 3 4 4 7 0 0 0"
+    },
+    {
+     "name": "case-19",
+     "stdin": "9\n1 1 2 2 4 4 6 7 7\n1 1 1 2 2 3 4 4 4\n",
+     "expect": "6\n1 1 2 2 4 4 0 0 0"
+    },
+    {
+     "name": "case-20",
+     "stdin": "9\n2 2 2 2 3 6 7 7 7\n3 3 4 4 4 5 5 7 7\n",
+     "expect": "3\n3 7 7 0 0 0 0 0 0"
+    },
+    {
+     "name": "case-21",
+     "stdin": "5\n1 2 3 5 7\n4 5 5 7 7\n",
+     "expect": "2\n5 7 0 0 0"
+    },
+    {
+     "name": "case-22",
+     "stdin": "4\n4 5 6 7\n1 5 5 6\n",
+     "expect": "2\n5 6 0 0"
+    },
+    {
+     "name": "case-23",
+     "stdin": "10\n1 1 2 3 3 3 4 6 6 6\n1 1 3 4 4 4 4 6 6 7\n",
+     "expect": "6\n1 1 3 4 6 6 0 0 0 0"
+    },
+    {
+     "name": "case-24",
+     "stdin": "9\n1 2 2 3 3 3 4 6 7\n1 2 2 3 3 4 4 6 7\n",
+     "expect": "8\n1 2 2 3 3 4 6 7 0"
     }
+   ]
+  },
+  "q3": {
+   "driver": "raw_main",
+   "mutation": "allowed",
+   "cases": [
+    {
+     "name": "case-01",
+     "stdin": "1\na\n",
+     "expect": "0\na"
+    },
+    {
+     "name": "case-02",
+     "stdin": "2\naa\n",
+     "expect": "1\na"
+    },
+    {
+     "name": "case-03",
+     "stdin": "2\nab\n",
+     "expect": "0\nab"
+    },
+    {
+     "name": "case-04",
+     "stdin": "2\nba\n",
+     "expect": "0\nba"
+    },
+    {
+     "name": "case-05",
+     "stdin": "4\nabba\n",
+     "expect": "1\naba"
+    },
+    {
+     "name": "case-06",
+     "stdin": "6\nabbaca\n",
+     "expect": "1\nabaca"
+    },
+    {
+     "name": "case-07",
+     "stdin": "8\ncbacdcbc\n",
+     "expect": "0\ncbacdcbc"
+    },
+    {
+     "name": "case-08",
+     "stdin": "5\nbbbaa\n",
+     "expect": "3\nba"
+    },
+    {
+     "name": "case-09",
+     "stdin": "7\nabababa\n",
+     "expect": "0\nabababa"
+    },
+    {
+     "name": "case-10",
+     "stdin": "4\ndcba\n",
+     "expect": "0\ndcba"
+    },
+    {
+     "name": "case-11",
+     "stdin": "6\nabcabc\n",
+     "expect": "0\nabcabc"
+    },
+    {
+     "name": "case-12",
+     "stdin": "4\nzzzz\n",
+     "expect": "3\nz"
+    },
+    {
+     "name": "case-13",
+     "stdin": "1\nc\n",
+     "expect": "0\nc"
+    },
+    {
+     "name": "case-14",
+     "stdin": "6\ncacdba\n",
+     "expect": "0\ncacdba"
+    },
+    {
+     "name": "case-15",
+     "stdin": "5\nbcdcd\n",
+     "expect": "0\nbcdcd"
+    },
+    {
+     "name": "case-16",
+     "stdin": "4\ncdcd\n",
+     "expect": "0\ncdcd"
+    },
+    {
+     "name": "case-17",
+     "stdin": "4\ncbcc\n",
+     "expect": "1\ncbc"
+    },
+    {
+     "name": "case-18",
+     "stdin": "7\ncbdcdcb\n",
+     "expect": "0\ncbdcdcb"
+    },
+    {
+     "name": "case-19",
+     "stdin": "1\nd\n",
+     "expect": "0\nd"
+    },
+    {
+     "name": "case-20",
+     "stdin": "7\ndcdcdca\n",
+     "expect": "0\ndcdcdca"
+    },
+    {
+     "name": "case-21",
+     "stdin": "5\nbdcdb\n",
+     "expect": "0\nbdcdb"
+    },
+    {
+     "name": "case-22",
+     "stdin": "7\nbabbbbc\n",
+     "expect": "3\nbabc"
+    },
+    {
+     "name": "case-23",
+     "stdin": "5\nabcac\n",
+     "expect": "0\nabcac"
+    },
+    {
+     "name": "case-24",
+     "stdin": "5\ndabdb\n",
+     "expect": "0\ndabdb"
+    }
+   ]
+  },
+  "q4": {
+   "driver": "raw_main",
+   "mutation": "allowed",
+   "cases": [
+    {
+     "name": "case-01",
+     "stdin": "1\n1\n",
+     "expect": "1"
+    },
+    {
+     "name": "case-02",
+     "stdin": "2\n1 1\n",
+     "expect": "1"
+    },
+    {
+     "name": "case-03",
+     "stdin": "2\n1 2\n",
+     "expect": "0"
+    },
+    {
+     "name": "case-04",
+     "stdin": "2\n2 1\n",
+     "expect": "0"
+    },
+    {
+     "name": "case-05",
+     "stdin": "4\n1 2 3 4\n",
+     "expect": "0"
+    },
+    {
+     "name": "case-06",
+     "stdin": "4\n4 3 2 1\n",
+     "expect": "0"
+    },
+    {
+     "name": "case-07",
+     "stdin": "4\n1 3 2 4\n",
+     "expect": "0"
+    },
+    {
+     "name": "case-08",
+     "stdin": "4\n1 2 2 3\n",
+     "expect": "0"
+    },
+    {
+     "name": "case-09",
+     "stdin": "4\n-3 -1 -2 0\n",
+     "expect": "0"
+    },
+    {
+     "name": "case-10",
+     "stdin": "5\n1 2 3 2 1\n",
+     "expect": "1"
+    },
+    {
+     "name": "case-11",
+     "stdin": "5\n5 1 4 2 3\n",
+     "expect": "0"
+    },
+    {
+     "name": "case-12",
+     "stdin": "4\n2 2 1 1\n",
+     "expect": "0"
+    },
+    {
+     "name": "case-13",
+     "stdin": "12\n3 -4 2 2 -1 -5 2 2 1 -1 5 0\n",
+     "expect": "0"
+    },
+    {
+     "name": "case-14",
+     "stdin": "8\n3 -1 -5 -3 3 5 -2 -1\n",
+     "expect": "0"
+    },
+    {
+     "name": "case-15",
+     "stdin": "5\n-4 1 -3 -4 5\n",
+     "expect": "0"
+    },
+    {
+     "name": "case-16",
+     "stdin": "1\n3\n",
+     "expect": "1"
+    },
+    {
+     "name": "case-17",
+     "stdin": "3\n2 2 -2\n",
+     "expect": "0"
+    },
+    {
+     "name": "case-18",
+     "stdin": "5\n0 2 2 4 4\n",
+     "expect": "0"
+    },
+    {
+     "name": "case-19",
+     "stdin": "3\n-3 -2 -4\n",
+     "expect": "0"
+    },
+    {
+     "name": "case-20",
+     "stdin": "6\n1 4 -1 1 3 3\n",
+     "expect": "0"
+    },
+    {
+     "name": "case-21",
+     "stdin": "11\n5 -3 3 1 4 0 2 0 -1 1 4\n",
+     "expect": "0"
+    },
+    {
+     "name": "case-22",
+     "stdin": "1\n-2\n",
+     "expect": "1"
+    },
+    {
+     "name": "case-23",
+     "stdin": "15\n2 1 -5 3 -2 3 2 0 5 -3 5 2 4 4 -1\n",
+     "expect": "0"
+    },
+    {
+     "name": "case-24",
+     "stdin": "15\n4 -5 0 3 2 -3 -3 2 -1 -2 4 -4 -4 -3 5\n",
+     "expect": "0"
+    }
+   ]
   }
+ }
 }

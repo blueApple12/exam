@@ -2,152 +2,92 @@
     <div class="hdr">
       <h1>מבוא למדעי המחשב מ'/ח'</h1>
       <div class="sub">234114 / 234117 &nbsp;·&nbsp; מועד ב׳ &nbsp;·&nbsp; סמסטר אביב תשפ"ו</div>
-      <div class="meta">
-        <span>משך הבחינה: שלוש שעות</span>
-        <span>חומר עזר: אין</span>
-        <span>4 שאלות · 25 נקודות לשאלה</span>
-      </div>
+      <div class="meta"><span>משך הבחינה: שלוש שעות</span><span>חומר עזר: אין</span><span>4 שאלות · 25 נקודות לשאלה</span></div>
     </div>
 
-    <div class="note">תרגול מדומה — תחזית 6 מתוך 12 למועד ב׳ אביב 2026. אינו מבחן אמיתי של הטכניון.</div>
+    <div class="note">תרגול מדומה לקראת מועד ב׳ אביב 2026, נבנה על שלד הבחינה האמיתי. נכתב על ידי Codex. אינו מבחן אמיתי של הטכניון.</div>
 
-    <!-- Q1 -->
+      <p>מבוא למדעי המחשב מ׳/ח׳ 234114/234117 · אביב 2026 מועד ב׳ — תרגול, לא המבחן האמיתי.</p>
+      <p>משך: 3 שעות. ללא חומר עזר. 4 שאלות × 25 נקודות. אין שימוש ב-struct או ב-backtracking. שלושת קובצי השלד המקוריים מצורפים ללא שינוי.</p>
     <section class="q">
-      <h2>שאלה 1 <span class="pts">25 נק'</span> — סיבוכיות</h2>
-      <p class="lead">
-        לכל סעיף ציינו <strong>סיבוכיות זמן</strong> ו<strong>סיבוכיות מקום נוסף</strong>, בסימון Θ, כפונקציה של <code>n</code>.
-        חובה לפשט את הביטוי ככל שניתן. הניחו כי סיבוכיות הזמן והמקום של <code>printf</code> ו-<code>free</code> היא Θ(1),
-        וכי סיבוכיות הזמן של <code>malloc(n)</code> היא Θ(1) וסיבוכיות המקום שלה היא Θ(n).
-        הניחו כי <code>sqrt</code> פועלת בזמן Θ(1).
-      </p>
-      <p class="lead"><strong>שימו לב:</strong> אין הבטחה ששלושת הסעיפים מקבלים תשובות שונות.
-      חשבו כל סעיף מחדש — ובפרט שימו לב לערכי חזרה של פונקציות עזר, למשתנים שמשתנים בין איטרציות,
-      ולמיקום של <code>free</code> ביחס לקריאה הרקורסיבית.</p>
-
-      <p><strong>א.</strong></p>
-<pre class="snip">int g(int n) {
-    int s = 0;
+      <h2>שאלה 1 — סיבוכיות (25 נקודות)</h2>
+      <p>לכל קטע יש לקבוע סיבוכיות זמן ומקום נוסף הדוקה Θ. כל סעיף שווה שליש מניקוד השאלה. יש להניח n חיובי, פעולות ו-printf/free/malloc בזמן קבוע, הקצאה של k איברים תופסת Θ(k) מקום, והקצאות מצליחות. יש לכלול את מחסנית הרקורסיה; אין להניח אופטימיזציית זנב. מנתחים את הקוד במודל הרגיל ללא גלישת מספרים וללא אופטימיזציות מהדר.</p>
+      <p><strong>סעיף א</strong></p>
+<pre class="snip">void f1(int n) {
     for (int i = 0; i &lt; n; i++)
-        s += i;
-    return s;
-}
-
-void f1(int n) {
-    for (int i = n; i &gt; 0; i /= 2) {
-        int* p = (int*) malloc(i * sizeof(int));
-        if (p == NULL) return;
-        int k = g(i);
-        for (int j = 0; j &lt; k; j++)
+        for (int j = 1; j &lt; n; j*=2)
             printf("*");
+}</pre>
+      <div class="req"><b>דרישות סיבוכיות</b><span class="val">זמן: ________ · מקום: ________</span></div>
+      <p><strong>סעיף ב</strong></p>
+<pre class="snip">int f2(int n) {
+    if (n &lt; 2)
+        return 1;
+    return f2(n/2)+f2(n/2);
+}</pre>
+      <div class="req"><b>דרישות סיבוכיות</b><span class="val">זמן: ________ · מקום: ________</span></div>
+      <p><strong>סעיף ג</strong></p>
+<pre class="snip">void f3(int n) {
+    for (int i = 1; i &lt;= n; i++) {
+        int* p = malloc(i*sizeof(int));
+        p[0] = i;
         free(p);
     }
 }</pre>
-
-      <p><strong>ב.</strong></p>
-<pre class="snip">void f2(int n) {
-    for (int i = 0; i &lt; n; i++)
-        for (int j = 0; j &lt; n; j++)
-            for (int k = 1; k &lt; n; k *= 2)
-                printf("*");
-}</pre>
-
-      <p><strong>ג.</strong></p>
-<pre class="snip">void f3(int n) {
-    for (int i = 1; i &lt; n; i++)
-        for (int j = i; j &lt; n; j *= 2)
-            printf("*");
-}</pre>
-
+      <div class="req"><b>דרישות סיבוכיות</b><span class="val">זמן: ________ · מקום: ________</span></div>
       <div class="q1grid" id="q1grid"></div>
     </section>
-
-    <!-- Q2 -->
     <section class="q">
-      <h2>שאלה 2 <span class="pts">25 נק'</span></h2>
-      <p>נתונה מטריצה <code>mat</code> בעלת <code>m</code> שורות ו-<code>N</code> עמודות
-      (<code>N</code> מוגדר ב-<code>#define</code> בשלד, אך <strong>אינו נחשב קבוע</strong> לצורך הסיבוכיות).
-      <strong>כל שורה בנפרד ממוינת בסדר לא-יורד</strong>; אין שום קשר בין שורה לשורה.</p>
-      <div class="sig">int examT_q2(int mat[][N], int m, int x);</div>
-      <p><strong>על הפונקציה להחזיר את מספר האיברים במטריצה הקטנים ממש מ-<code>x</code>.</strong></p>
+      <h2>שאלה 2 — 25 נקודות</h2>
+      <div class="sig">int examB_q2(int* a, int* b, int n);</div>
+      <p>נתונים a,b באורך n≥1, ממוינים בסדר לא יורד, עם ערכים שלמים חיוביים. כתבו בתחילת a את החיתוך עם ריבוי של שני המערכים, בסדר עולה: כל ערך יופיע כמספר הפעמים המינימלי שלו בשני הקלטים. החזירו את אורך החיתוך k ומלאו באפס את כל a[k..n−1]. אין לשנות את b.</p>
+      <div class="req"><b>דרישות סיבוכיות</b><span class="val">דרישת זמן / מקום נוסף: O(n) / O(1)</span></div>
+      <p><strong>דוגמאות — הפלט כולל את כל מה שה-main מדפיס</strong></p>
       <table class="ex">
-        <tr><th>קלט</th><th>פלט</th><th>הסבר</th></tr>
-        <tr><td>mat = {{1,3,5,7},{2,4,6,8},{0,9,10,11}}, m = 3, x = 5</td><td>5</td><td>1,3 · 2,4 · 0</td></tr>
-        <tr><td>אותה מטריצה, x = 9</td><td>9</td><td>כל השורה הראשונה והשנייה, ועוד 0</td></tr>
-        <tr><td>אותה מטריצה, x = 0</td><td>0</td><td>אין איבר קטן מ-0</td></tr>
-        <tr><td>mat = {{1,2,3,4}}, m = 1, x = 3</td><td>2</td><td>1,2</td></tr>
+        <tr><th>קלט ל-main</th><th>פלט מלא</th></tr>
+        <tr><td>12<br>2 2 3 4 5 5 6 6 7 7 7 7<br>2 2 3 4 5 5 6 6 7 7 7 7</td><td>12<br>2 2 3 4 5 5 6 6 7 7 7 7</td></tr>
+        <tr><td>12<br>1 1 1 1 1 1 1 1 1 1 1 1<br>9 9 9 9 9 9 9 9 9 9 9 9</td><td>0<br>0 0 0 0 0 0 0 0 0 0 0 0</td></tr>
+        <tr><td>12<br>1 1 1 1 2 2 3 4 5 6 7 7<br>1 1 2 2 3 3 5 5 6 6 7 7</td><td>9<br>1 1 2 2 3 5 6 7 7 0 0 0</td></tr>
+        <tr><td>1<br>3<br>7</td><td>0<br>0</td></tr>
       </table>
-      <ul class="rules">
-        <li>ניתן להניח כי הקלט תקין וכי <code>m &ge; 1</code>. ייתכנו ערכים שליליים וערכים חוזרים.</li>
-        <li><strong>אין לשנות את תוכן המטריצה</strong> ואין להקצות זיכרון דינמי.</li>
-        <li>פתרון בזמן Θ(m·N) אינו עומד בדרישה.</li>
-      </ul>
-      <div class="req"><b>דרישות סיבוכיות</b><span class="val">זמן Θ(m · log N)</span><span class="val">מקום נוסף Θ(1)</span></div>
+      <p>כתבו רק את הפונקציה המבוקשת ועזר מותר בקובץ השלד. אל תשנו את main, את החתימה או את פורמט הקלט והפלט.</p>
     </section>
-
-    <!-- Q3 -->
     <section class="q">
-      <h2>שאלה 3 <span class="pts">25 נק'</span></h2>
-      <p>נתונה מחרוזת <code>s</code> באורך <code>n</code> המכילה אותיות אנגליות קטנות בלבד.</p>
-      <p>תת-מחרוזת תיקרא <strong>כמעט-מאוזנת</strong> אם <strong>בדיוק אות אחת</strong> מופיעה בה
-      מספר <em>אי-זוגי</em> של פעמים (וכל יתר האותיות המופיעות בה &mdash; מספר זוגי של פעמים).
-      שקול לכך: ניתן לסדר מחדש את תוויה ולקבל פלינדרום באורך אי-זוגי.</p>
-      <div class="sig">int examT_q3(char* s);</div>
-      <p><strong>על הפונקציה להחזיר את מספר תתי-המחרוזות הכמעט-מאוזנות של <code>s</code>.</strong>
-      תתי-מחרוזות במקומות שונים נספרות בנפרד, גם אם תוכנן זהה.</p>
+      <h2>שאלה 3 — 25 נקודות</h2>
+      <div class="sig">int examB_q3(char* s, char* p);</div>
+      <p>נתונה s לא ריקה של אותיות a–z. כתבו ל-p תו אחד מכל רצף מקסימלי של תווים זהים ברציפות. החזירו את מספר התווים שנמחקו, ולא את האורך החדש. אין לשנות את s; יש לסיים את p ב-'\0'. אין למחוק הופעות נפרדות שאינן באותו רצף.</p>
+      <div class="req"><b>דרישות סיבוכיות</b><span class="val">דרישת זמן / מקום נוסף: O(n) / O(1)</span></div>
+      <p><strong>דוגמאות — הפלט כולל את כל מה שה-main מדפיס</strong></p>
       <table class="ex">
-        <tr><th>קלט</th><th>פלט</th><th>הסבר</th></tr>
-        <tr><td>s = "aab"</td><td>4</td><td>"a", "a", "b", "aab"</td></tr>
-        <tr><td>s = "abc"</td><td>3</td><td>שלושת התווים הבודדים</td></tr>
-        <tr><td>s = "aaa"</td><td>4</td><td>שלוש באורך 1, ועוד "aaa"</td></tr>
-        <tr><td>s = "abab"</td><td>6</td><td>&mdash;</td></tr>
+        <tr><th>קלט ל-main</th><th>פלט מלא</th></tr>
+        <tr><td>6<br>abbaca</td><td>1<br>abaca</td></tr>
+        <tr><td>8<br>cbacdcbc</td><td>0<br>cbacdcbc</td></tr>
+        <tr><td>7<br>abababa</td><td>0<br>abababa</td></tr>
+        <tr><td>2<br>aa</td><td>1<br>a</td></tr>
       </table>
-      <ul class="rules">
-        <li><strong>אין לשנות את תוכן המחרוזת <code>s</code>, אפילו לא באופן זמני.</strong></li>
-        <li><strong>אין להקצות זיכרון דינמי</strong> ואין להשתמש במערך שגודלו תלוי ב-<code>n</code>.</li>
-        <li><strong>רמז:</strong> מה שקובע הוא רק <em>הזוגיות</em> של 26 המונים. אפשר להחזיק את כולן
-        במשתנה <code>int</code> יחיד, ולעדכן אותו בפעולה אחת לכל תו. כמה ביטים דלוקים בו
-        כאשר תת-המחרוזת כמעט-מאוזנת?</li>
-      </ul>
-      <div class="req"><b>דרישות סיבוכיות</b><span class="val">זמן O(n²)</span><span class="val">מקום נוסף O(1)</span></div>
+      <p>כתבו רק את הפונקציה המבוקשת ועזר מותר בקובץ השלד. אל תשנו את main, את החתימה או את פורמט הקלט והפלט.</p>
     </section>
-
-    <!-- Q4 -->
     <section class="q">
-      <h2>שאלה 4 <span class="pts">25 נק'</span> &mdash; רקורסיה</h2>
-      <p>נתון מספר שלם ואי-שלילי <code>n</code>. יש לרצף לוח בגודל <code>2 &times; n</code> באמצעות
-      שני סוגי אריחים:</p>
-      <ul class="rules">
-        <li><strong>דומינו</strong> בגודל <code>1 &times; 2</code>, שניתן להניח אנכית או אופקית;</li>
-        <li><strong>ריבוע</strong> בגודל <code>2 &times; 2</code>.</li>
-      </ul>
-      <p>האריחים אינם חופפים ואינם חורגים מהלוח, ויש לכסות אותו במלואו.</p>
-      <div class="sig">int examT_q4(int n);</div>
-      <p><strong>על הפונקציה להחזיר את מספר הריצופים השונים של הלוח.</strong>
-      עבור <code>n = 0</code> יש ריצוף אחד (הריק).</p>
+      <h2>שאלה 4 — 25 נקודות</h2>
+      <div class="sig">int examB_q4(int* arr, int n);</div>
+      <p>נתון arr באורך n≥1. החזירו 1 אם המערך פלינדרומי, ו-0 אחרת. אין לשנות את המערך. הפונקציה עצמה חייבת להיות רקורסיבית. אסורות לולאות, פונקציית מעטפת והקצאה דינמית; גם עזר חייב להיות רקורסיבי. אין דרישת סיבוכיות.</p>
+      <div class="req"><b>דרישות סיבוכיות</b><span class="val">דרישת זמן / מקום נוסף: No required bound; O(n) time / O(n) stack</span></div>
+      <p><strong>דוגמאות — הפלט כולל את כל מה שה-main מדפיס</strong></p>
       <table class="ex">
-        <tr><th>קלט</th><th>פלט</th><th>הסבר</th></tr>
-        <tr><td>n = 1</td><td>1</td><td>דומינו אנכי יחיד</td></tr>
-        <tr><td>n = 2</td><td>3</td><td>שני אנכיים · שני אופקיים · ריבוע</td></tr>
-        <tr><td>n = 3</td><td>5</td><td>&mdash;</td></tr>
-        <tr><td>n = 5</td><td>21</td><td>&mdash;</td></tr>
+        <tr><th>קלט ל-main</th><th>פלט מלא</th></tr>
+        <tr><td>4<br>1 2 3 4</td><td>0</td></tr>
+        <tr><td>4<br>4 3 2 1</td><td>0</td></tr>
+        <tr><td>4<br>1 3 2 4</td><td>0</td></tr>
+        <tr><td>1<br>1</td><td>1</td></tr>
       </table>
-      <p><strong>רמז:</strong> חשבו על העמודה השמאלית ביותר. כמה דרכים יש לכסות אותה, וכמה
-      עמודות כל אחת מהן &quot;צורכת&quot;? מכאן נובעת נוסחת נסיגה עם <strong>שני</strong> איברים
-      קודמים ומקדם שאינו 1.</p>
-      <ul class="rules">
-        <li><strong>על הפונקציה להיות רקורסיבית בלבד, ללא שימוש בלולאות</strong> &mdash; בכל הפונקציות שתכתבו.</li>
-        <li><strong>אסור להשתמש בפונקציית מעטפת</strong> &mdash; <code>examT_q4</code> עצמה חייבת לקרוא לעצמה.</li>
-        <li>ניתן להשתמש בפונקציות עזר, יש לממש את כולן, וגם הן חייבות להיות רקורסיביות בלבד.</li>
-        <li>אין להקצות זיכרון דינמי ואין להשתמש במשתנים סטטיים או גלובליים.</li>
-        <li><strong>אין דרישות סיבוכיות בשאלה זו.</strong></li>
-      </ul>
+      <p>כתבו רק את הפונקציה המבוקשת ועזר מותר בקובץ השלד. אל תשנו את main, את החתימה או את פורמט הקלט והפלט.</p>
     </section>
 
     <section class="q">
       <h2>איך עובדים כאן</h2>
       <ul class="rules">
         <li>כתבו בעורך שמשמאל. שלושה קבצים, לשונית לכל שאלה. אל תשנו את <code>main</code>.</li>
-        <li><strong>הרץ בדיקות</strong> מריץ את הפונקציה שלכם מול מקרי הבדיקה של השאלה — כולל בדיקות של האילוצים (לולאות ברקורסיה, שינוי הקלט, פונקציית מעטפת).</li>
+        <li><strong>הרץ בדיקות</strong> מריץ את התוכנית שלכם על הקלט של כל מקרה ומשווה את <strong>כל הפלט</strong> — הערך המוחזר וגם המערך או המחרוזת שנדפסים אחריו.</li>
         <li>סיבוכיות <em>אינה</em> נבדקת אוטומטית. פתרון שעובר את כל הבדיקות בסיבוכיות שגויה — נכשל בשאלה.</li>
         <li>בסיום לחצו <strong>סיום והגשה</strong>, שמרו את קובץ ההגשה, ובקשו מ-Claude ציון עם <code>/grade</code>.</li>
       </ul>
