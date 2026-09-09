@@ -332,9 +332,9 @@ textarea.paste{width:100%;height:130px;font-family:"JetBrains Mono",monospace;fo
 <div class="split">
   <div class="pane ide" id="paneIde">
     <div class="tabs" role="tablist">
-      <button class="tab" role="tab" data-q="q2" aria-selected="true"><span class="dot" id="dot-q2"></span>examT_q2.c</button>
-      <button class="tab" role="tab" data-q="q3" aria-selected="false"><span class="dot" id="dot-q3"></span>examT_q3.c</button>
-      <button class="tab" role="tab" data-q="q4" aria-selected="false"><span class="dot" id="dot-q4"></span>examT_q4.c</button>
+      <button class="tab" role="tab" data-q="q2" aria-selected="true"><span class="dot" id="dot-q2"></span><span class="fnlbl" data-q="q2"></span></button>
+      <button class="tab" role="tab" data-q="q3" aria-selected="false"><span class="dot" id="dot-q3"></span><span class="fnlbl" data-q="q3"></span></button>
+      <button class="tab" role="tab" data-q="q4" aria-selected="false"><span class="dot" id="dot-q4"></span><span class="fnlbl" data-q="q4"></span></button>
     </div>
     <div class="toolbar">
       <button class="tbtn run" id="runBtn">▶ Run</button>
@@ -443,6 +443,8 @@ const TEST_MANIFEST = ExamDrivers.normalizeManifest(
   JSON.parse(document.getElementById("exam-tests").textContent)
 );
 const QUESTION_TESTS = TEST_MANIFEST.questions;
+const FN = TEST_MANIFEST.fnPrefix || "examT_";
+document.querySelectorAll(".fnlbl").forEach(el => { el.textContent = FN + el.dataset.q + ".c"; });
 const BASE_TESTS = Object.fromEntries(
   ["q2","q3","q4"].map(q => [q, QUESTION_TESTS[q].cases])
 );
@@ -813,7 +815,7 @@ function constraintCheck(q, src){
     const outsideMain = whole.split(mainBody).join(" ");
     if(/\b(for|while)\s*\(/.test(outsideMain)) v.push("יש לולאה (for/while) מחוץ ל-main — שאלה 4 אוסרת לולאות");
     if(/\b(malloc|calloc|realloc)\s*\(/.test(outsideMain)) v.push("יש הקצאת זיכרון דינמי — שאלה 4 אוסרת זאת");
-    const body = funcBody(src, "examT_q4");
+    const body = funcBody(src, FN + "q4");
     if(body !== null && !/\bexamT_q4\s*\(/.test(body)) v.push("examT_q4 אינה קוראת לעצמה — אסורה פונקציית מעטפת");
   }
   return v;
@@ -1008,11 +1010,29 @@ async function runTests(q, pick){
   out.innerHTML = "";
   let pass = 0, fail = 0;
   const frag = document.createDocumentFragment();
+  // raw_main keeps the skeleton's own main and grades its complete stdout,
+  // so there is no per-line "<int> <mutated>" pair to parse.
+  const RAW = ExamDrivers.isRawDriver(question.driver);
+  const rawOuts = RAW ? ExamDrivers.splitRawOutputs(j.stdout, cases.length) : null;
+  const normRaw = s => String(s == null ? "" : s).replace(/\r/g, "").split("\n").map(l => l.replace(/\s+$/, "")).join("\n").trim();
   cases.forEach((tc, i) => {
-    const parts = (lines[i] || "").trim().split(/\s+/);
-    const got = parts[0];
-    const args = ExamDrivers.formatArgs(question.driver, tc.args);
-    const mutationForbidden = question.mutation === "forbidden" && parts[1] === "1";
+    const parts = RAW ? [] : (lines[i] || "").trim().split(/\s+/);
+    const got = RAW ? normRaw(rawOuts[i]) : parts[0];
+    const args = RAW ? String(tc.stdin).trim().replace(/\n/g, " | ") : ExamDrivers.formatArgs(question.driver, tc.args);
+    const mutationForbidden = !RAW && question.mutation === "forbidden" && parts[1] === "1";
+    if(RAW){
+      if(got === normRaw(tc.expect)){
+        pass++;
+        frag.appendChild(line(tc.name,"ok", esc(args) + ' <span style="color:#5b6270">→ ' + esc(got.replace(/\n/g, " ⏎ ")) + "</span>"));
+      }else{
+        fail++;
+        frag.appendChild(line(tc.name,"no","<em>" + esc(args) + "</em>"));
+        const d = document.createElement("dl"); d.className = "diffgrid";
+        d.innerHTML = "<dt>ציפיתי</dt><dd><pre>" + esc(normRaw(tc.expect)) + "</pre></dd><dt>קיבלתי</dt><dd><pre>" + esc(got || "(אין פלט)") + "</pre></dd>";
+        frag.appendChild(d);
+      }
+      return;
+    }
     if(got === undefined || got === ""){
       fail++;
       frag.appendChild(line(tc.name,"no","<em>" + esc(args) + "</em>"));
@@ -1092,7 +1112,7 @@ function offerFile(filename, data){
   document.body.appendChild(a); a.click();
   setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 1000);
 }
-document.getElementById("dlBtn").addEventListener("click", () => offerFile("examT_" + STATE.active + ".c", STATE.code[STATE.active]));
+document.getElementById("dlBtn").addEventListener("click", () => offerFile(FN + STATE.active + ".c", STATE.code[STATE.active]));
 
 /* ================= test cases panel ================= */
 /* BEGIN CUSTOM CASE HELPERS */
@@ -1123,6 +1143,9 @@ function validateCases(q, arr){
   const cases = canonicalizeLegacyCustomCases(q, arr).map((c,i) => {
     if(!c || typeof c !== "object") throw new Error("מקרה " + (i+1) + ": אינו אובייקט");
     if(c.expect === undefined || c.expect === null) throw new Error("מקרה " + (i+1) + ": חסר expect");
+    if(ExamDrivers.isRawDriver(QUESTION_TESTS[q] && QUESTION_TESTS[q].driver)){
+      return {name:String(c.name || ("c" + (i+1))), stdin:String(c.stdin == null ? "" : c.stdin), expect:String(c.expect)};
+    }
     return {name:String(c.name || ("c" + (i+1))), args:c.args, expect:String(c.expect)};
   });
   return ExamDrivers.validateCases(QUESTION_TESTS[q], cases);
@@ -1193,7 +1216,9 @@ function renderCases(){
   list.forEach((tc, i) => {
     const row = document.createElement("div");
     row.className = "trow";
-    const args = ExamDrivers.formatArgs(QUESTION_TESTS[q].driver, tc.args);
+    const args = ExamDrivers.isRawDriver(QUESTION_TESTS[q].driver)
+      ? String(tc.stdin == null ? "" : tc.stdin).trim().replace(/\n/g, " | ")
+      : ExamDrivers.formatArgs(QUESTION_TESTS[q].driver, tc.args);
     row.innerHTML = '<span class="nm">' + esc(tc.name) + '</span><span class="ag" title="' + esc(args) + '">' +
       esc(args) + '</span><span class="ex">' + esc(String(tc.expect)) + "</span>";
     const b = document.createElement("button");

@@ -104,6 +104,34 @@ keys and emits the shown call to the question's `examT_qN` function:
 | `int_only` | `value` (int) | `examT_qN(value)` |
 | `two_ints` | `first` (int), `second` (int) | `examT_qN(first, second)` |
 | `two_int_arrays` | `a` (int array), `na` (length), `b` (int array), `nb` (length) | `examT_qN(a, na, b, nb)` |
+| `raw_main` | *(none — see below)* | the skeleton's own `main` |
+
+### `raw_main` — grading complete stdout
+
+Every driver above builds its own `main`, calls the graded function directly and
+compares one returned `int`. That cannot express a paper whose `main` prints
+**more than the return value** — a rewritten array, or a string built into an
+output buffer. The Spring 2026 Moed B skeletons do exactly that.
+
+With `"driver": "raw_main"` the skeleton's own `main` is kept (renamed to
+`__student_main`), called once per case, and its **entire stdout** is compared.
+Cases carry `stdin` instead of `args`, and `expect` is free text rather than a
+decimal string:
+
+```json
+{
+  "driver": "raw_main",
+  "mutation": "allowed",
+  "cases": [
+    {"name": "t01", "stdin": "3\n9 9 9\n0 0 1\n", "expect": "1\n0 0 0"}
+  ]
+}
+```
+
+Comparison trims trailing whitespace on each line and the block as a whole.
+Runs are fenced with a `<<<CASE>>>` marker so outputs can be told apart;
+`mutation` is not enforced, because the printed output already reveals what the
+function did to its inputs.
 
 `n`, `m`, `cols`, `na`, and `nb` must match the corresponding input
 dimensions. For `matrix_rows_int`, `cols` must also match the skeleton's

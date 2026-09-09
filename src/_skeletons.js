@@ -2,6 +2,7 @@ const SKELETONS = {
   q2: `#include <stdio.h>
 #include <stdlib.h>
 
+#define N 4
 #define DONT_KNOW "I_dont_know"
 
 void printIDontKnow() {
@@ -9,33 +10,35 @@ void printIDontKnow() {
     exit(0);
 }
 
-int examT_q2(int arr[], int n, int x);
+int examT_q2(int mat[][N], int m, int x);
 
 int main(void) {
     // uncomment next line if you don't know the answer
     // printIDontKnow();
 
-    int n;
-    if (scanf("%d", &n) != 1) return 1;
-    int* arr = malloc(n * sizeof(int));
-    if (!arr) return 1;
-    for (int i = 0; i < n; i++) {
-        if (scanf("%d", &arr[i]) != 1) {
-            free(arr);
-            return 1;
+    int m;
+    if (scanf("%d", &m) != 1) return 1;
+    int (*mat)[N] = malloc(m * sizeof(*mat));
+    if (!mat) return 1;
+    for (int i = 0; i < m; i++) {
+        for (int j = 0; j < N; j++) {
+            if (scanf("%d", &mat[i][j]) != 1) {
+                free(mat);
+                return 1;
+            }
         }
     }
     int x;
     if (scanf("%d", &x) != 1) {
-        free(arr);
+        free(mat);
         return 1;
     }
-    printf("%d", examT_q2(arr, n, x));
-    free(arr);
+    printf("%d", examT_q2(mat, m, x));
+    free(mat);
     return 0;
 }
 
-int examT_q2(int arr[], int n, int x) {
+int examT_q2(int mat[][N], int m, int x) {
     // write your code here
     return 0;
 }`,
@@ -49,7 +52,7 @@ void printIDontKnow() {
     exit(0);
 }
 
-int examT_q3(char* s, char c);
+int examT_q3(char* s);
 
 int main(void) {
     // uncomment next line if you don't know the answer
@@ -63,18 +66,12 @@ int main(void) {
         free(s);
         return 1;
     }
-    char c;
-    if (scanf(" %c", &c) != 1) {
-        free(s);
-        return 1;
-    }
-    printf("%d\\n", examT_q3(s, c));
-    printf("%s\\n", s);
+    printf("%d\\n", examT_q3(s));
     free(s);
     return 0;
 }
 
-int examT_q3(char* s, char c) {
+int examT_q3(char* s) {
     // write your code here
     return 0;
 }`,
@@ -88,39 +85,20 @@ void printIDontKnow() {
     exit(0);
 }
 
-int examT_q4(char* a, char* b);
-
-//Do not change this function
-char* read_string(void) {
-    int len;
-    if (scanf("%d", &len) != 1) return NULL;
-    char* str = malloc((len + 1) * sizeof(char));
-    if (!str) return NULL;
-    if (scanf("%s", str) != 1) {
-        free(str);
-        return NULL;
-    }
-    return str;
-}
+int examT_q4(int n);
 
 int main(void) {
     // uncomment next line if you don't know the answer
     // printIDontKnow();
 
-    char* a = read_string();
-    if (!a) return 1;
-    char* b = read_string();
-    if (!b) {
-        free(a);
-        return 1;
-    }
-    printf("%d\\n", examT_q4(a, b));
-    free(a);
-    free(b);
+    int n;
+    if (scanf("%d", &n) != 1) return 1;
+
+    printf("%d", examT_q4(n));
     return 0;
 }
 
-int examT_q4(char* a, char* b) {
+int examT_q4(int n) {
     // write your code here
     return 0;
 }`

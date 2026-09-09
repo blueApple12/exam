@@ -85,7 +85,7 @@ for (const q of ['q2', 'q3', 'q4']) {
   if (!SOLUTIONS[q]) { console.log(q + ': NO SOLUTIONS.' + q + ' in _solutions.js'); hadError = true; continue; }
   let src;
   try {
-    src = spliceSolution(SKELETONS[q], 'examT_' + q, SOLUTIONS[q].code);
+    src = spliceSolution(SKELETONS[q], (MANIFEST.fnPrefix || 'examT_') + q, SOLUTIONS[q].code);
   } catch (e) { console.log(q + ': splice failed - ' + e.message); hadError = true; continue; }
 
   const res = await gcc(
@@ -96,15 +96,28 @@ for (const q of ['q2', 'q3', 'q4']) {
     console.log(q + ': COMPILE FAILED\n' + res.diagnostics);
     hadError = true; continue;
   }
-  const lines = (res.stdout || '').trim().split('\n').filter(Boolean);
   let pass = 0, fail = 0;
-  cases.forEach((tc, i) => {
-    const tokens = (lines[i] || '').trim().split(/\s+/);
-    const got = tokens[0];
-    const mutated = tokens[1];
-    if (got === String(tc.expect) && !(question.mutation === 'forbidden' && mutated === '1')) pass++;
-    else { fail++; console.log('  ' + q + '/' + tc.name + ': want ' + tc.expect + ' got ' + JSON.stringify(got)); }
-  });
+  if (ExamDrivers.isRawDriver(question.driver)) {
+    // raw_main grades the skeleton's whole stdout, not just the int return.
+    const outs = ExamDrivers.splitRawOutputs(res.stdout, cases.length);
+    const norm = s => String(s).replace(/\r/g, '').split('\n').map(l => l.trimEnd()).join('\n').trim();
+    cases.forEach((tc, i) => {
+      if (norm(outs[i]) === norm(tc.expect)) pass++;
+      else {
+        fail++;
+        console.log('  ' + q + '/' + tc.name + ': want ' + JSON.stringify(norm(tc.expect)) + ' got ' + JSON.stringify(norm(outs[i])));
+      }
+    });
+  } else {
+    const lines = (res.stdout || '').trim().split('\n').filter(Boolean);
+    cases.forEach((tc, i) => {
+      const tokens = (lines[i] || '').trim().split(/\s+/);
+      const got = tokens[0];
+      const mutated = tokens[1];
+      if (got === String(tc.expect) && !(question.mutation === 'forbidden' && mutated === '1')) pass++;
+      else { fail++; console.log('  ' + q + '/' + tc.name + ': want ' + tc.expect + ' got ' + JSON.stringify(got)); }
+    });
+  }
   totalPass += pass; totalFail += fail;
   console.log(q + ': ' + pass + '/' + cases.length + ' passed' + (res.diagnostics ? ' (warnings present)' : ''));
 }

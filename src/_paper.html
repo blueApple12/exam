@@ -9,7 +9,7 @@
       </div>
     </div>
 
-    <div class="note">תרגול מדומה — תחזית 8 מתוך 12 למועד ב׳ אביב 2026. אינו מבחן אמיתי של הטכניון.</div>
+    <div class="note">תרגול מדומה — תחזית 6 מתוך 12 למועד ב׳ אביב 2026. אינו מבחן אמיתי של הטכניון.</div>
 
     <!-- Q1 -->
     <section class="q">
@@ -25,30 +25,36 @@
       ולמיקום של <code>free</code> ביחס לקריאה הרקורסיבית.</p>
 
       <p><strong>א.</strong></p>
-<pre class="snip">void f1(int n) {
-    int m = 1;
-    for (int i = n; i &gt; 1; i /= 2) {
-        for (int j = 0; j &lt; m * n; j++)
+<pre class="snip">int g(int n) {
+    int s = 0;
+    for (int i = 0; i &lt; n; i++)
+        s += i;
+    return s;
+}
+
+void f1(int n) {
+    for (int i = n; i &gt; 0; i /= 2) {
+        int* p = (int*) malloc(i * sizeof(int));
+        if (p == NULL) return;
+        int k = g(i);
+        for (int j = 0; j &lt; k; j++)
             printf("*");
-        m *= 2;
+        free(p);
     }
 }</pre>
 
       <p><strong>ב.</strong></p>
-<pre class="snip">int f2(int n) {
-    if (n &lt;= 1) return 1;
-    int* a = (int*) malloc(n * sizeof(int));
-    if (a == NULL) return 0;
+<pre class="snip">void f2(int n) {
     for (int i = 0; i &lt; n; i++)
-        a[i] = i;
-    free(a);
-    return f2(n - 1);
+        for (int j = 0; j &lt; n; j++)
+            for (int k = 1; k &lt; n; k *= 2)
+                printf("*");
 }</pre>
 
       <p><strong>ג.</strong></p>
 <pre class="snip">void f3(int n) {
-    for (int i = 1; i &lt; n; i *= 2)
-        for (int j = 1; j &lt; i; j *= 2)
+    for (int i = 1; i &lt; n; i++)
+        for (int j = i; j &lt; n; j *= 2)
             printf("*");
 }</pre>
 
@@ -58,71 +64,76 @@
     <!-- Q2 -->
     <section class="q">
       <h2>שאלה 2 <span class="pts">25 נק'</span></h2>
-      <p><strong>הגדרה:</strong> מערך <code>arr</code> באורך <code>n</code> ייקרא <strong>מערך חזית</strong>
-      אם קיים <code>k</code>, <code>0 &le; k &le; n</code>, כך ש-<code>arr[0] &gt; arr[1] &gt; ... &gt; arr[k-1] &gt; 0</code>
-      וכל יתר התאים, מ-<code>k</code> והלאה, מכילים 0. הערך <code>k</code> <strong>אינו נתון</strong>
-      ועשוי להיות קטן בהרבה מ-<code>n</code>.</p>
-      <div class="sig">int examT_q2(int arr[], int n, int x);</div>
-      <p>הפונקציה מקבלת מערך חזית, את אורכו, ומספר שלם אי-שלילי <code>x</code>.
-      <strong>על הפונקציה להחזיר את מספר האיברים במערך הגדולים ממש מ-<code>x</code>.</strong></p>
+      <p>נתונה מטריצה <code>mat</code> בעלת <code>m</code> שורות ו-<code>N</code> עמודות
+      (<code>N</code> מוגדר ב-<code>#define</code> בשלד, אך <strong>אינו נחשב קבוע</strong> לצורך הסיבוכיות).
+      <strong>כל שורה בנפרד ממוינת בסדר לא-יורד</strong>; אין שום קשר בין שורה לשורה.</p>
+      <div class="sig">int examT_q2(int mat[][N], int m, int x);</div>
+      <p><strong>על הפונקציה להחזיר את מספר האיברים במטריצה הקטנים ממש מ-<code>x</code>.</strong></p>
       <table class="ex">
         <tr><th>קלט</th><th>פלט</th><th>הסבר</th></tr>
-        <tr><td>arr = {9,7,5,3,0,0,0,0}, n = 8, x = 4</td><td>3</td><td>‎9, 7, 5</td></tr>
-        <tr><td>arr = {9,7,5,3,0,0,0,0}, n = 8, x = 0</td><td>4</td><td>כל החיוביים</td></tr>
-        <tr><td>arr = {9,7,5,3,0,0,0,0}, n = 8, x = 9</td><td>0</td><td>אין גדול מ-9</td></tr>
-        <tr><td>arr = {0,0,0}, n = 3, x = 0</td><td>0</td><td>‎k = 0</td></tr>
+        <tr><td>mat = {{1,3,5,7},{2,4,6,8},{0,9,10,11}}, m = 3, x = 5</td><td>5</td><td>1,3 · 2,4 · 0</td></tr>
+        <tr><td>אותה מטריצה, x = 9</td><td>9</td><td>כל השורה הראשונה והשנייה, ועוד 0</td></tr>
+        <tr><td>אותה מטריצה, x = 0</td><td>0</td><td>אין איבר קטן מ-0</td></tr>
+        <tr><td>mat = {{1,2,3,4}}, m = 1, x = 3</td><td>2</td><td>1,2</td></tr>
       </table>
       <ul class="rules">
-        <li>ניתן להניח כי הקלט תקין, כי <code>x &ge; 0</code>, וכי המערך אכן מערך חזית.</li>
-        <li><strong>אין לשנות את תוכן המערך</strong> ואין להקצות זיכרון דינמי.</li>
-        <li><strong>דרישת הסיבוכיות היא ב-<code>k</code>, לא ב-<code>n</code></strong> &mdash;
-        פתרון בזמן Θ(log n) אינו עומד בה. שימו לב שדרושים כאן <strong>שני</strong> שלבים:
-        תחילה יש לאתר את <code>k</code> מבלי לסרוק, ורק אז לחפש את הסף בתוך החלק החיובי,
-        שהוא <em>יורד</em> ולא עולה.</li>
+        <li>ניתן להניח כי הקלט תקין וכי <code>m &ge; 1</code>. ייתכנו ערכים שליליים וערכים חוזרים.</li>
+        <li><strong>אין לשנות את תוכן המטריצה</strong> ואין להקצות זיכרון דינמי.</li>
+        <li>פתרון בזמן Θ(m·N) אינו עומד בדרישה.</li>
       </ul>
-      <div class="req"><b>דרישות סיבוכיות</b><span class="val">זמן Θ(log k)</span><span class="val">מקום נוסף Θ(1)</span></div>
+      <div class="req"><b>דרישות סיבוכיות</b><span class="val">זמן Θ(m · log N)</span><span class="val">מקום נוסף Θ(1)</span></div>
     </section>
 
     <!-- Q3 -->
     <section class="q">
       <h2>שאלה 3 <span class="pts">25 נק'</span></h2>
-      <p>נתונה מחרוזת <code>s</code> באורך <code>n</code> המכילה אותיות אנגליות קטנות בלבד, ותו <code>c</code>.</p>
-      <div class="sig">int examT_q3(char* s, char c);</div>
-      <p><strong>על הפונקציה להזיז את כל ההופעות של <code>c</code> אל סוף המחרוזת — במקום, בתוך <code>s</code> עצמה —
-      תוך שמירה על הסדר היחסי של יתר התווים, ולהחזיר את מספר ההופעות של <code>c</code>.</strong>
-      אורך המחרוזת אינו משתנה.</p>
+      <p>נתונה מחרוזת <code>s</code> באורך <code>n</code> המכילה אותיות אנגליות קטנות בלבד.</p>
+      <p>תת-מחרוזת תיקרא <strong>כמעט-מאוזנת</strong> אם <strong>בדיוק אות אחת</strong> מופיעה בה
+      מספר <em>אי-זוגי</em> של פעמים (וכל יתר האותיות המופיעות בה &mdash; מספר זוגי של פעמים).
+      שקול לכך: ניתן לסדר מחדש את תוויה ולקבל פלינדרום באורך אי-זוגי.</p>
+      <div class="sig">int examT_q3(char* s);</div>
+      <p><strong>על הפונקציה להחזיר את מספר תתי-המחרוזות הכמעט-מאוזנות של <code>s</code>.</strong>
+      תתי-מחרוזות במקומות שונים נספרות בנפרד, גם אם תוכנן זהה.</p>
       <table class="ex">
-        <tr><th>קלט</th><th>פלט</th><th>s לאחר הקריאה</th></tr>
-        <tr><td>s = "abcabc", c = 'a'</td><td>2</td><td>"bcbcaa"</td></tr>
-        <tr><td>s = "banana", c = 'a'</td><td>3</td><td>"bnnaaa"</td></tr>
-        <tr><td>s = "abc", c = 'z'</td><td>0</td><td>"abc"</td></tr>
-        <tr><td>s = "aaa", c = 'a'</td><td>3</td><td>"aaa"</td></tr>
+        <tr><th>קלט</th><th>פלט</th><th>הסבר</th></tr>
+        <tr><td>s = "aab"</td><td>4</td><td>"a", "a", "b", "aab"</td></tr>
+        <tr><td>s = "abc"</td><td>3</td><td>שלושת התווים הבודדים</td></tr>
+        <tr><td>s = "aaa"</td><td>4</td><td>שלוש באורך 1, ועוד "aaa"</td></tr>
+        <tr><td>s = "abab"</td><td>6</td><td>&mdash;</td></tr>
       </table>
       <ul class="rules">
-        <li>ניתן להניח כי הקלט תקין וכי <code>s</code> אינה ריקה.</li>
-        <li><strong>אין להקצות זיכרון דינמי</strong> ואין להשתמש במערך עזר.</li>
-        <li>אין להשתמש בפונקציות ספריה לטיפול במחרוזות.</li>
+        <li><strong>אין לשנות את תוכן המחרוזת <code>s</code>, אפילו לא באופן זמני.</strong></li>
+        <li><strong>אין להקצות זיכרון דינמי</strong> ואין להשתמש במערך שגודלו תלוי ב-<code>n</code>.</li>
+        <li><strong>רמז:</strong> מה שקובע הוא רק <em>הזוגיות</em> של 26 המונים. אפשר להחזיק את כולן
+        במשתנה <code>int</code> יחיד, ולעדכן אותו בפעולה אחת לכל תו. כמה ביטים דלוקים בו
+        כאשר תת-המחרוזת כמעט-מאוזנת?</li>
       </ul>
-      <div class="req"><b>דרישות סיבוכיות</b><span class="val">זמן Θ(n)</span><span class="val">מקום נוסף Θ(1)</span></div>
+      <div class="req"><b>דרישות סיבוכיות</b><span class="val">זמן O(n²)</span><span class="val">מקום נוסף O(1)</span></div>
     </section>
 
     <!-- Q4 -->
     <section class="q">
       <h2>שאלה 4 <span class="pts">25 נק'</span> &mdash; רקורסיה</h2>
-      <p>נתונות שתי מחרוזות <code>a</code> ו-<code>b</code> המכילות אותיות אנגליות קטנות בלבד.</p>
-      <div class="sig">int examT_q4(char* a, char* b);</div>
-      <p><strong>על הפונקציה להחזיר <code>1</code> אם ניתן לקבל את <code>a</code> מתוך <code>b</code>
-      על ידי מחיקת תו <em>אחד בדיוק</em></strong> (לא פחות ולא יותר), ו-<code>0</code> אחרת.</p>
+      <p>נתון מספר שלם ואי-שלילי <code>n</code>. יש לרצף לוח בגודל <code>2 &times; n</code> באמצעות
+      שני סוגי אריחים:</p>
+      <ul class="rules">
+        <li><strong>דומינו</strong> בגודל <code>1 &times; 2</code>, שניתן להניח אנכית או אופקית;</li>
+        <li><strong>ריבוע</strong> בגודל <code>2 &times; 2</code>.</li>
+      </ul>
+      <p>האריחים אינם חופפים ואינם חורגים מהלוח, ויש לכסות אותו במלואו.</p>
+      <div class="sig">int examT_q4(int n);</div>
+      <p><strong>על הפונקציה להחזיר את מספר הריצופים השונים של הלוח.</strong>
+      עבור <code>n = 0</code> יש ריצוף אחד (הריק).</p>
       <table class="ex">
         <tr><th>קלט</th><th>פלט</th><th>הסבר</th></tr>
-        <tr><td>a = "abc", b = "abxc"</td><td>1</td><td>מחיקת ‎'x'</td></tr>
-        <tr><td>a = "abc", b = "abc"</td><td>0</td><td>אפס מחיקות, לא אחת</td></tr>
-        <tr><td>a = "cat", b = "cart"</td><td>1</td><td>מחיקת ‎'r'</td></tr>
-        <tr><td>a = "ba", b = "abc"</td><td>0</td><td>הסדר אינו מתאים</td></tr>
+        <tr><td>n = 1</td><td>1</td><td>דומינו אנכי יחיד</td></tr>
+        <tr><td>n = 2</td><td>3</td><td>שני אנכיים · שני אופקיים · ריבוע</td></tr>
+        <tr><td>n = 3</td><td>5</td><td>&mdash;</td></tr>
+        <tr><td>n = 5</td><td>21</td><td>&mdash;</td></tr>
       </table>
-      <p><strong>רמז:</strong> כל עוד התווים מתאימים, התקדמו בשתי המחרוזות יחד. באי-ההתאמה
-      <em>הראשונה</em> יש בדיוק אפשרות אחת &mdash; ומאותה נקודה כבר לא נותרו מחיקות, ולכן
-      השאר חייב להיות <strong>שווה בדיוק</strong>. זו בדיקה נפרדת, בפונקציית עזר רקורסיבית.</p>
+      <p><strong>רמז:</strong> חשבו על העמודה השמאלית ביותר. כמה דרכים יש לכסות אותה, וכמה
+      עמודות כל אחת מהן &quot;צורכת&quot;? מכאן נובעת נוסחת נסיגה עם <strong>שני</strong> איברים
+      קודמים ומקדם שאינו 1.</p>
       <ul class="rules">
         <li><strong>על הפונקציה להיות רקורסיבית בלבד, ללא שימוש בלולאות</strong> &mdash; בכל הפונקציות שתכתבו.</li>
         <li><strong>אסור להשתמש בפונקציית מעטפת</strong> &mdash; <code>examT_q4</code> עצמה חייבת לקרוא לעצמה.</li>

@@ -17,8 +17,24 @@ const ExamDrivers = (() => {
     "two_strings",
     "int_only",
     "two_ints",
-    "two_int_arrays"
+    "two_int_arrays",
+    // raw_main keeps the skeleton's OWN main and compares complete stdout.
+    // Needed for papers whose main prints more than the returned int (a
+    // rewritten array, a built string). Cases are {name, stdin, expect}
+    // instead of {name, args, expect}, and expect is free text, not a decimal.
+    "raw_main"
   ]);
+  const RAW_DRIVER = "raw_main";
+  const RAW_MARK = "<<<CASE>>>";
+  const isRaw = driver => driver === RAW_DRIVER;
+
+  // Split a raw_main run's stdout into one entry per case.
+  function splitRawOutputs(stdout, count) {
+    const parts = String(stdout == null ? "" : stdout).split(RAW_MARK);
+    const out = [];
+    for (let i = 1; i <= count; i++) out.push((parts[i] === undefined ? "" : parts[i]).trim());
+    return out;
+  }
   const MUTATION_POLICIES = new Set(["allowed", "forbidden"]);
 
   function isObject(value) {
@@ -70,16 +86,26 @@ const ExamDrivers = (() => {
     const names = new Set();
     const cases = source.cases.map((item) => {
       if (!isObject(item)) invalid(question, "case must be an object");
-      rejectUnexpectedKeys(`${question} case`, item, ["name", "args", "expect"]);
+      const raw = isRaw(source.driver);
+      rejectUnexpectedKeys(`${question} case`, item, ["name", raw ? "stdin" : "args", "expect"]);
       const caseName = item.name;
       if (typeof caseName !== "string" || caseName.trim().length === 0) {
         invalid(question, "case name must be a nonempty string", caseName);
       }
       if (names.has(caseName)) invalid(question, "case name must be unique", caseName);
       names.add(caseName);
-      if (!isObject(item.args)) invalid(question, "args must be an object", caseName);
-      if (typeof item.expect !== "string" || !/^-?\d+$/.test(item.expect)) {
-        invalid(question, "expect must be a decimal string", caseName);
+      if (raw) {
+        if (typeof item.stdin !== "string" || item.stdin.length === 0) {
+          invalid(question, "stdin must be a nonempty string", caseName);
+        }
+        if (typeof item.expect !== "string") {
+          invalid(question, "expect must be a string", caseName);
+        }
+      } else {
+        if (!isObject(item.args)) invalid(question, "args must be an object", caseName);
+        if (typeof item.expect !== "string" || !/^-?\d+$/.test(item.expect)) {
+          invalid(question, "expect must be a decimal string", caseName);
+        }
       }
       return copy(item);
     });
@@ -104,7 +130,7 @@ const ExamDrivers = (() => {
     const hasVersion = Object.prototype.hasOwnProperty.call(raw, "version");
     let questions;
     if (hasVersion) {
-      rejectUnexpectedKeys("top-level", raw, ["version", "questions"]);
+      rejectUnexpectedKeys("top-level", raw, ["version", "questions", "fnPrefix"]);
       if (raw.version !== 2) throw new Error(`Invalid manifest version ${String(raw.version)}`);
       if (!isObject(raw.questions)) throw new Error("Invalid manifest: questions must be an object");
       questions = raw.questions;
@@ -121,7 +147,17 @@ const ExamDrivers = (() => {
       const source = hasVersion ? questions[id] : {...LEGACY[id], cases:canonicalizeLegacyCases(id, questions[id])};
       normalizedQuestions[id] = normalizeQuestion(id, source, options);
     }
-    return {version:2, questions:normalizedQuestions};
+    // Graded functions are named <fnPrefix><qN>. Papers built on a real handed
+    // out skeleton keep that skeleton's own name (e.g. "examB_") instead of
+    // renaming it, so the file the student edits matches the one they were given.
+    let fnPrefix = "examT_";
+    if (hasVersion && Object.prototype.hasOwnProperty.call(raw, "fnPrefix")) {
+      if (typeof raw.fnPrefix !== "string" || !/^[A-Za-z_][A-Za-z0-9_]*_$/.test(raw.fnPrefix)) {
+        throw new Error(`Invalid manifest: fnPrefix ${String(raw.fnPrefix)} must be an identifier ending in "_"`);
+      }
+      fnPrefix = raw.fnPrefix;
+    }
+    return {version:2, fnPrefix, questions:normalizedQuestions};
   }
 
   const INT_MIN = -2147483648;
@@ -333,6 +369,15 @@ const ExamDrivers = (() => {
       }
       if (names.has(name)) throw new Error(`Invalid driver case ${name}: case name must be unique`);
       names.add(name);
+      if (isRaw(config.driver)) {
+        if (typeof testCase.stdin !== "string" || testCase.stdin.length === 0) {
+          throw new Error(`Invalid driver case ${name}: stdin must be a nonempty string`);
+        }
+        if (typeof testCase.expect !== "string") {
+          throw new Error(`Invalid driver case ${name}: expect must be a string`);
+        }
+        return {name, stdin:testCase.stdin, expect:testCase.expect};
+      }
       if (typeof testCase.expect !== "string" || !/^-?\d+$/.test(testCase.expect)) {
         throw new Error(`Invalid driver case ${name}: expect must be a decimal string`);
       }
@@ -537,6 +582,12 @@ const ExamDrivers = (() => {
   function driverFor(q, question, cases) {
     const config = driverQuestion(question);
     if (!Array.isArray(cases)) throw new Error("Invalid driver cases: cases must be an array");
+    if (isRaw(config.driver)) {
+      // The skeleton's own main (renamed to __student_main) already reads its
+      // input and prints everything that is graded. Call it once per case and
+      // fence each run so the outputs can be told apart.
+      return `\n#include <stdio.h>\nint __student_main(void);\nint main(void){ int T; if(scanf("%d",&T)!=1||T<0) return 1; for(int t=0;t<T;t++){ printf("\\n${RAW_MARK}\\n"); fflush(stdout); __student_main(); fflush(stdout); } printf("\\n${RAW_MARK}\\n"); return 0; }`;
+    }
     const entry = DRIVER_REGISTRY[config.driver];
     return sourceFor(entry.read(), entry.call(selectedFunction(q)), entry.snapshot(config.mutation), entry.cleanup());
   }
@@ -544,6 +595,15 @@ const ExamDrivers = (() => {
   function driverStdin(question, cases) {
     const config = driverQuestion(question);
     if (!Array.isArray(cases)) throw new Error("Invalid driver cases: cases must be an array");
+    if (isRaw(config.driver)) {
+      let out = String(cases.length) + "\n";
+      for (const testCase of cases) {
+        if (!isObject(testCase)) throw new Error("Invalid driver case: case must be an object");
+        if (typeof testCase.stdin !== "string") throw new Error("Invalid driver case: stdin must be a string");
+        out += testCase.stdin.endsWith("\n") ? testCase.stdin : testCase.stdin + "\n";
+      }
+      return out;
+    }
     const entry = DRIVER_REGISTRY[config.driver];
     const lines = [String(cases.length)];
     for (const testCase of cases) {
@@ -554,5 +614,5 @@ const ExamDrivers = (() => {
     return lines.join("\n") + "\n";
   }
 
-  return {normalizeManifest, validateArgs, validateCases, cString, cChar, formatArgs, driverFor, driverStdin};
+  return {normalizeManifest, validateArgs, validateCases, cString, cChar, formatArgs, driverFor, driverStdin, splitRawOutputs, isRawDriver:isRaw};
 })();

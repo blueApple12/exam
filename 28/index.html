@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Moed Bet Simulator 014 — 234114</title>
+<title>Moed Bet Codex — 28 — 234114</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@500;700;900&family=Assistant:wght@400;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap">
@@ -306,7 +306,7 @@ textarea.paste{width:100%;height:130px;font-family:"JetBrains Mono",monospace;fo
 <div class="bar">
   <div class="brand">
     <b>מבוא למדעי המחשב מ'/ח' — 234114</b>
-    <span>תחזית 06/12 · Moed Bet · Spring 2026 · practice</span>
+    <span>תחזית 3 · Codex · Moed Bet · Spring 2026 · practice</span>
   </div>
   <div class="pills" id="pills"></div>
   <div class="clock off" id="clock">3:00:00</div>
@@ -408,159 +408,83 @@ textarea.paste{width:100%;height:130px;font-family:"JetBrains Mono",monospace;fo
     <div class="hdr">
       <h1>מבוא למדעי המחשב מ'/ח'</h1>
       <div class="sub">234114 / 234117 &nbsp;·&nbsp; מועד ב׳ &nbsp;·&nbsp; סמסטר אביב תשפ"ו</div>
-      <div class="meta">
-        <span>משך הבחינה: שלוש שעות</span>
-        <span>חומר עזר: אין</span>
-        <span>4 שאלות · 25 נקודות לשאלה</span>
-      </div>
+      <div class="meta"><span>משך הבחינה: שלוש שעות</span><span>חומר עזר: אין</span><span>4 שאלות · 25 נקודות לשאלה</span></div>
     </div>
 
-    <div class="note">תרגול מדומה — תחזית 6 מתוך 12 למועד ב׳ אביב 2026. אינו מבחן אמיתי של הטכניון.</div>
+    <div class="note">תרגול מדומה לקראת מועד ב׳ אביב 2026, נבנה על שלד הבחינה האמיתי. נכתב על ידי Codex. אינו מבחן אמיתי של הטכניון.</div>
 
-    <!-- Q1 -->
+      <p>מבוא למדעי המחשב מ׳/ח׳ 234114/234117 · אביב 2026 מועד ב׳ — תרגול, לא המבחן האמיתי.</p>
+      <p>משך: 3 שעות. ללא חומר עזר. 4 שאלות × 25 נקודות. אין שימוש ב-struct או ב-backtracking. שלושת קובצי השלד המקוריים מצורפים ללא שינוי.</p>
     <section class="q">
-      <h2>שאלה 1 <span class="pts">25 נק'</span> — סיבוכיות</h2>
-      <p class="lead">
-        לכל סעיף ציינו <strong>סיבוכיות זמן</strong> ו<strong>סיבוכיות מקום נוסף</strong>, בסימון Θ, כפונקציה של <code>n</code>.
-        חובה לפשט את הביטוי ככל שניתן. הניחו כי סיבוכיות הזמן והמקום של <code>printf</code> ו-<code>free</code> היא Θ(1),
-        וכי סיבוכיות הזמן של <code>malloc(n)</code> היא Θ(1) וסיבוכיות המקום שלה היא Θ(n).
-        הניחו כי <code>sqrt</code> פועלת בזמן Θ(1).
-      </p>
-      <p class="lead"><strong>שימו לב:</strong> אין הבטחה ששלושת הסעיפים מקבלים תשובות שונות.
-      חשבו כל סעיף מחדש — ובפרט שימו לב לערכי חזרה של פונקציות עזר, למשתנים שמשתנים בין איטרציות,
-      ולמיקום של <code>free</code> ביחס לקריאה הרקורסיבית.</p>
-
-      <p><strong>א.</strong></p>
-<pre class="snip">int g(int n) {
-    int s = 0;
-    for (int i = 0; i &lt; n; i++)
-        s += i;
-    return s;
-}
-
-void f1(int n) {
-    for (int i = n; i &gt; 0; i /= 2) {
-        int* p = (int*) malloc(i * sizeof(int));
-        if (p == NULL) return;
-        int k = g(i);
-        for (int j = 0; j &lt; k; j++)
-            printf("*");
-        free(p);
-    }
-}</pre>
-
-      <p><strong>ב.</strong></p>
-<pre class="snip">void f2(int n) {
-    for (int i = 0; i &lt; n; i++)
-        for (int j = 0; j &lt; n; j++)
-            for (int k = 1; k &lt; n; k *= 2)
-                printf("*");
-}</pre>
-
-      <p><strong>ג.</strong></p>
-<pre class="snip">void f3(int n) {
-    for (int i = 1; i &lt; n; i++)
-        for (int j = i; j &lt; n; j *= 2)
-            printf("*");
-}</pre>
-
-      <div class="q1grid" id="q1grid"></div>
+      <h2>שאלה 1 — סיבוכיות (25 נקודות)</h2>
+      <p>לכל קטע יש לקבוע סיבוכיות זמן ומקום נוסף הדוקה Θ. כל סעיף שווה שליש מניקוד השאלה. יש להניח n חיובי, פעולות ו-printf/free/malloc בזמן קבוע, הקצאה של k איברים תופסת Θ(k) מקום, והקצאות מצליחות. יש לכלול את מחסנית הרקורסיה; אין להניח אופטימיזציית זנב. מנתחים את הקוד במודל הרגיל ללא גלישת מספרים וללא אופטימיזציות מהדר.</p>
+      <p><strong>סעיף א</strong></p>
+<pre class="snip">void f1(int n){for(int i=2;i*i&lt;=n;i++)for(int j=1;j&lt;=n;j*=2)printf("*");}</pre>
+      <div class="req"><b>דרישות סיבוכיות</b><span class="val">זמן: ________ · מקום: ________</span></div>
+      <p><strong>סעיף ב</strong></p>
+<pre class="snip">void f2(int n){if(n&lt;2)return;for(int i=0;i&lt;n;i++)printf("*");f2(n/2);f2(n/2);}</pre>
+      <div class="req"><b>דרישות סיבוכיות</b><span class="val">זמן: ________ · מקום: ________</span></div>
+      <p><strong>סעיף ג</strong></p>
+<pre class="snip">void f3(int n){for(int i=1;i&lt;=n;i*=2){int* p=malloc(i*sizeof(int));for(int j=0;j&lt;i;j++)p[j]=j;free(p);}}</pre>
+      <div class="req"><b>דרישות סיבוכיות</b><span class="val">זמן: ________ · מקום: ________</span></div>
     </section>
-
-    <!-- Q2 -->
     <section class="q">
-      <h2>שאלה 2 <span class="pts">25 נק'</span></h2>
-      <p>נתונה מטריצה <code>mat</code> בעלת <code>m</code> שורות ו-<code>N</code> עמודות
-      (<code>N</code> מוגדר ב-<code>#define</code> בשלד, אך <strong>אינו נחשב קבוע</strong> לצורך הסיבוכיות).
-      <strong>כל שורה בנפרד ממוינת בסדר לא-יורד</strong>; אין שום קשר בין שורה לשורה.</p>
-      <div class="sig">int examT_q2(int mat[][N], int m, int x);</div>
-      <p><strong>על הפונקציה להחזיר את מספר האיברים במטריצה הקטנים ממש מ-<code>x</code>.</strong></p>
+      <h2>שאלה 2 — 25 נקודות</h2>
+      <div class="sig">int examB_q2(int* a, int* b, int n);</div>
+      <p>נתונים a,b באורך n≥1, ממוינים בסדר לא יורד, עם ערכים שלמים חיוביים. לכל ערך, הסירו מ-a מספר הופעות השווה למינימום בין מספר הופעותיו ב-a וב-b. כתבו את ההופעות שנותרו בתחילת a בסדר עולה, מלאו את כל יתר התאים באפס והחזירו את מספר ההופעות שנותרו. אין לשנות את b.</p>
+      <div class="req"><b>דרישות סיבוכיות</b><span class="val">דרישת זמן / מקום נוסף: O(n) / O(1)</span></div>
+      <p><strong>דוגמאות — הפלט כולל את כל מה שה-main מדפיס</strong></p>
       <table class="ex">
-        <tr><th>קלט</th><th>פלט</th><th>הסבר</th></tr>
-        <tr><td>mat = {{1,3,5,7},{2,4,6,8},{0,9,10,11}}, m = 3, x = 5</td><td>5</td><td>1,3 · 2,4 · 0</td></tr>
-        <tr><td>אותה מטריצה, x = 9</td><td>9</td><td>כל השורה הראשונה והשנייה, ועוד 0</td></tr>
-        <tr><td>אותה מטריצה, x = 0</td><td>0</td><td>אין איבר קטן מ-0</td></tr>
-        <tr><td>mat = {{1,2,3,4}}, m = 1, x = 3</td><td>2</td><td>1,2</td></tr>
+        <tr><th>קלט ל-main</th><th>פלט מלא</th></tr>
+        <tr><td>11<br>1 1 1 2 4 4 4 4 6 6 7<br>1 1 1 2 4 4 4 4 6 6 7</td><td>0<br>0 0 0 0 0 0 0 0 0 0 0</td></tr>
+        <tr><td>9<br>1 1 1 1 1 1 1 1 1<br>9 9 9 9 9 9 9 9 9</td><td>9<br>1 1 1 1 1 1 1 1 1</td></tr>
+        <tr><td>5<br>2 4 5 7 7<br>1 1 3 4 6</td><td>4<br>2 5 7 7 0</td></tr>
+        <tr><td>1<br>5<br>5</td><td>0<br>0</td></tr>
       </table>
-      <ul class="rules">
-        <li>ניתן להניח כי הקלט תקין וכי <code>m &ge; 1</code>. ייתכנו ערכים שליליים וערכים חוזרים.</li>
-        <li><strong>אין לשנות את תוכן המטריצה</strong> ואין להקצות זיכרון דינמי.</li>
-        <li>פתרון בזמן Θ(m·N) אינו עומד בדרישה.</li>
-      </ul>
-      <div class="req"><b>דרישות סיבוכיות</b><span class="val">זמן Θ(m · log N)</span><span class="val">מקום נוסף Θ(1)</span></div>
+      <p>כתבו רק את הפונקציה המבוקשת ועזר מותר בקובץ השלד. אל תשנו את main, את החתימה או את פורמט הקלט והפלט.</p>
     </section>
-
-    <!-- Q3 -->
     <section class="q">
-      <h2>שאלה 3 <span class="pts">25 נק'</span></h2>
-      <p>נתונה מחרוזת <code>s</code> באורך <code>n</code> המכילה אותיות אנגליות קטנות בלבד.</p>
-      <p>תת-מחרוזת תיקרא <strong>כמעט-מאוזנת</strong> אם <strong>בדיוק אות אחת</strong> מופיעה בה
-      מספר <em>אי-זוגי</em> של פעמים (וכל יתר האותיות המופיעות בה &mdash; מספר זוגי של פעמים).
-      שקול לכך: ניתן לסדר מחדש את תוויה ולקבל פלינדרום באורך אי-זוגי.</p>
-      <div class="sig">int examT_q3(char* s);</div>
-      <p><strong>על הפונקציה להחזיר את מספר תתי-המחרוזות הכמעט-מאוזנות של <code>s</code>.</strong>
-      תתי-מחרוזות במקומות שונים נספרות בנפרד, גם אם תוכנן זהה.</p>
+      <h2>שאלה 3 — 25 נקודות</h2>
+      <div class="sig">int examB_q3(char* s, char* p);</div>
+      <p>נתונה s לא ריקה של אותיות a–z. כתבו ל-p את תת-המחרוזת הרציפה הארוכה ביותר שאין בה אות שמופיעה פעמיים. בשוויון בחרו בזו שמתחילה מוקדם יותר ב-s. החזירו את אורכה. אין לשנות את s, ויש לסיים את p ב-'\0'.</p>
+      <div class="req"><b>דרישות סיבוכיות</b><span class="val">דרישת זמן / מקום נוסף: O(n) / O(1)</span></div>
+      <p><strong>דוגמאות — הפלט כולל את כל מה שה-main מדפיס</strong></p>
       <table class="ex">
-        <tr><th>קלט</th><th>פלט</th><th>הסבר</th></tr>
-        <tr><td>s = "aab"</td><td>4</td><td>"a", "a", "b", "aab"</td></tr>
-        <tr><td>s = "abc"</td><td>3</td><td>שלושת התווים הבודדים</td></tr>
-        <tr><td>s = "aaa"</td><td>4</td><td>שלוש באורך 1, ועוד "aaa"</td></tr>
-        <tr><td>s = "abab"</td><td>6</td><td>&mdash;</td></tr>
+        <tr><th>קלט ל-main</th><th>פלט מלא</th></tr>
+        <tr><td>6<br>abbaca</td><td>3<br>bac</td></tr>
+        <tr><td>8<br>cbacdcbc</td><td>4<br>bacd</td></tr>
+        <tr><td>7<br>abababa</td><td>2<br>ab</td></tr>
+        <tr><td>2<br>aa</td><td>1<br>a</td></tr>
       </table>
-      <ul class="rules">
-        <li><strong>אין לשנות את תוכן המחרוזת <code>s</code>, אפילו לא באופן זמני.</strong></li>
-        <li><strong>אין להקצות זיכרון דינמי</strong> ואין להשתמש במערך שגודלו תלוי ב-<code>n</code>.</li>
-        <li><strong>רמז:</strong> מה שקובע הוא רק <em>הזוגיות</em> של 26 המונים. אפשר להחזיק את כולן
-        במשתנה <code>int</code> יחיד, ולעדכן אותו בפעולה אחת לכל תו. כמה ביטים דלוקים בו
-        כאשר תת-המחרוזת כמעט-מאוזנת?</li>
-      </ul>
-      <div class="req"><b>דרישות סיבוכיות</b><span class="val">זמן O(n²)</span><span class="val">מקום נוסף O(1)</span></div>
+      <p>כתבו רק את הפונקציה המבוקשת ועזר מותר בקובץ השלד. אל תשנו את main, את החתימה או את פורמט הקלט והפלט.</p>
     </section>
-
-    <!-- Q4 -->
     <section class="q">
-      <h2>שאלה 4 <span class="pts">25 נק'</span> &mdash; רקורסיה</h2>
-      <p>נתון מספר שלם ואי-שלילי <code>n</code>. יש לרצף לוח בגודל <code>2 &times; n</code> באמצעות
-      שני סוגי אריחים:</p>
-      <ul class="rules">
-        <li><strong>דומינו</strong> בגודל <code>1 &times; 2</code>, שניתן להניח אנכית או אופקית;</li>
-        <li><strong>ריבוע</strong> בגודל <code>2 &times; 2</code>.</li>
-      </ul>
-      <p>האריחים אינם חופפים ואינם חורגים מהלוח, ויש לכסות אותו במלואו.</p>
-      <div class="sig">int examT_q4(int n);</div>
-      <p><strong>על הפונקציה להחזיר את מספר הריצופים השונים של הלוח.</strong>
-      עבור <code>n = 0</code> יש ריצוף אחד (הריק).</p>
+      <h2>שאלה 4 — 25 נקודות</h2>
+      <div class="sig">int examB_q4(int* arr, int n);</div>
+      <p>נתון arr באורך n≥1. מיקום i נקרא שיא קידומת אם arr[i] גדול ממש מכל איבר שקדם לו. מיקום 0 תמיד נחשב שיא. החזירו את מספר שיאי הקידומת. אין לשנות את arr. הפונקציה עצמה וכל עזר חייבים להיות רקורסיביים; אין לולאות, פונקציית מעטפת או הקצאה דינמית. אין דרישת סיבוכיות.</p>
+      <div class="req"><b>דרישות סיבוכיות</b><span class="val">דרישת זמן / מקום נוסף: No required bound; O(n²) time / O(n) stack</span></div>
+      <p><strong>דוגמאות — הפלט כולל את כל מה שה-main מדפיס</strong></p>
       <table class="ex">
-        <tr><th>קלט</th><th>פלט</th><th>הסבר</th></tr>
-        <tr><td>n = 1</td><td>1</td><td>דומינו אנכי יחיד</td></tr>
-        <tr><td>n = 2</td><td>3</td><td>שני אנכיים · שני אופקיים · ריבוע</td></tr>
-        <tr><td>n = 3</td><td>5</td><td>&mdash;</td></tr>
-        <tr><td>n = 5</td><td>21</td><td>&mdash;</td></tr>
+        <tr><th>קלט ל-main</th><th>פלט מלא</th></tr>
+        <tr><td>4<br>1 2 3 4</td><td>4</td></tr>
+        <tr><td>4<br>4 3 2 1</td><td>1</td></tr>
+        <tr><td>4<br>1 3 2 4</td><td>3</td></tr>
+        <tr><td>1<br>1</td><td>1</td></tr>
       </table>
-      <p><strong>רמז:</strong> חשבו על העמודה השמאלית ביותר. כמה דרכים יש לכסות אותה, וכמה
-      עמודות כל אחת מהן &quot;צורכת&quot;? מכאן נובעת נוסחת נסיגה עם <strong>שני</strong> איברים
-      קודמים ומקדם שאינו 1.</p>
-      <ul class="rules">
-        <li><strong>על הפונקציה להיות רקורסיבית בלבד, ללא שימוש בלולאות</strong> &mdash; בכל הפונקציות שתכתבו.</li>
-        <li><strong>אסור להשתמש בפונקציית מעטפת</strong> &mdash; <code>examT_q4</code> עצמה חייבת לקרוא לעצמה.</li>
-        <li>ניתן להשתמש בפונקציות עזר, יש לממש את כולן, וגם הן חייבות להיות רקורסיביות בלבד.</li>
-        <li>אין להקצות זיכרון דינמי ואין להשתמש במשתנים סטטיים או גלובליים.</li>
-        <li><strong>אין דרישות סיבוכיות בשאלה זו.</strong></li>
-      </ul>
+      <p>כתבו רק את הפונקציה המבוקשת ועזר מותר בקובץ השלד. אל תשנו את main, את החתימה או את פורמט הקלט והפלט.</p>
     </section>
 
     <section class="q">
       <h2>איך עובדים כאן</h2>
       <ul class="rules">
         <li>כתבו בעורך שמשמאל. שלושה קבצים, לשונית לכל שאלה. אל תשנו את <code>main</code>.</li>
-        <li><strong>הרץ בדיקות</strong> מריץ את הפונקציה שלכם מול מקרי הבדיקה של השאלה — כולל בדיקות של האילוצים (לולאות ברקורסיה, שינוי הקלט, פונקציית מעטפת).</li>
+        <li><strong>הרץ בדיקות</strong> מריץ את התוכנית שלכם על הקלט של כל מקרה ומשווה את <strong>כל הפלט</strong> — הערך המוחזר וגם המערך או המחרוזת שנדפסים אחריו.</li>
         <li>סיבוכיות <em>אינה</em> נבדקת אוטומטית. פתרון שעובר את כל הבדיקות בסיבוכיות שגויה — נכשל בשאלה.</li>
         <li>בסיום לחצו <strong>סיום והגשה</strong>, שמרו את קובץ ההגשה, ובקשו מ-Claude ציון עם <code>/grade</code>.</li>
       </ul>
     </section>
 
   </div>
-
   </div>
 </div>
 
@@ -573,565 +497,389 @@ void f1(int n) {
 </div>
 
 <script id="exam-tests" type="application/json">{
-  "version": 2,
-  "questions": {
-    "q2": {
-      "driver": "matrix_rows_int",
-      "mutation": "forbidden",
-      "cases": [
-        {
-          "name": "t01",
-          "args": {
-            "mat": [
-              [
-                1,
-                3,
-                5,
-                7
-              ],
-              [
-                2,
-                4,
-                6,
-                8
-              ],
-              [
-                0,
-                9,
-                10,
-                11
-              ]
-            ],
-            "m": 3,
-            "cols": 4,
-            "value": 5
-          },
-          "expect": "5"
-        },
-        {
-          "name": "t02",
-          "args": {
-            "mat": [
-              [
-                1,
-                3,
-                5,
-                7
-              ],
-              [
-                2,
-                4,
-                6,
-                8
-              ],
-              [
-                0,
-                9,
-                10,
-                11
-              ]
-            ],
-            "m": 3,
-            "cols": 4,
-            "value": 1
-          },
-          "expect": "1"
-        },
-        {
-          "name": "t03",
-          "args": {
-            "mat": [
-              [
-                1,
-                3,
-                5,
-                7
-              ],
-              [
-                2,
-                4,
-                6,
-                8
-              ],
-              [
-                0,
-                9,
-                10,
-                11
-              ]
-            ],
-            "m": 3,
-            "cols": 4,
-            "value": 100
-          },
-          "expect": "12"
-        },
-        {
-          "name": "t04",
-          "args": {
-            "mat": [
-              [
-                1,
-                3,
-                5,
-                7
-              ],
-              [
-                2,
-                4,
-                6,
-                8
-              ],
-              [
-                0,
-                9,
-                10,
-                11
-              ]
-            ],
-            "m": 3,
-            "cols": 4,
-            "value": 0
-          },
-          "expect": "0"
-        },
-        {
-          "name": "t05",
-          "args": {
-            "mat": [
-              [
-                1,
-                3,
-                5,
-                7
-              ],
-              [
-                2,
-                4,
-                6,
-                8
-              ],
-              [
-                0,
-                9,
-                10,
-                11
-              ]
-            ],
-            "m": 3,
-            "cols": 4,
-            "value": 9
-          },
-          "expect": "9"
-        },
-        {
-          "name": "t06",
-          "args": {
-            "mat": [
-              [
-                1,
-                3,
-                5,
-                7
-              ],
-              [
-                2,
-                4,
-                6,
-                8
-              ],
-              [
-                0,
-                9,
-                10,
-                11
-              ]
-            ],
-            "m": 3,
-            "cols": 4,
-            "value": 10
-          },
-          "expect": "10"
-        },
-        {
-          "name": "t07",
-          "args": {
-            "mat": [
-              [
-                1,
-                2,
-                3,
-                4
-              ]
-            ],
-            "m": 1,
-            "cols": 4,
-            "value": 3
-          },
-          "expect": "2"
-        },
-        {
-          "name": "t08",
-          "args": {
-            "mat": [
-              [
-                1,
-                2,
-                3,
-                4
-              ]
-            ],
-            "m": 1,
-            "cols": 4,
-            "value": 5
-          },
-          "expect": "4"
-        },
-        {
-          "name": "t09",
-          "args": {
-            "mat": [
-              [
-                1,
-                2,
-                3,
-                4
-              ]
-            ],
-            "m": 1,
-            "cols": 4,
-            "value": 1
-          },
-          "expect": "0"
-        },
-        {
-          "name": "t10",
-          "args": {
-            "mat": [
-              [
-                -5,
-                -3,
-                0,
-                2
-              ],
-              [
-                1,
-                1,
-                1,
-                1
-              ]
-            ],
-            "m": 2,
-            "cols": 4,
-            "value": 1
-          },
-          "expect": "3"
-        },
-        {
-          "name": "t11",
-          "args": {
-            "mat": [
-              [
-                -5,
-                -3,
-                0,
-                2
-              ],
-              [
-                1,
-                1,
-                1,
-                1
-              ]
-            ],
-            "m": 2,
-            "cols": 4,
-            "value": 2
-          },
-          "expect": "7"
-        },
-        {
-          "name": "t12",
-          "args": {
-            "mat": [
-              [
-                -5,
-                -3,
-                0,
-                2
-              ],
-              [
-                1,
-                1,
-                1,
-                1
-              ]
-            ],
-            "m": 2,
-            "cols": 4,
-            "value": -3
-          },
-          "expect": "1"
-        },
-        {
-          "name": "t13",
-          "args": {
-            "mat": [
-              [
-                5,
-                5,
-                5,
-                5
-              ],
-              [
-                5,
-                5,
-                5,
-                5
-              ]
-            ],
-            "m": 2,
-            "cols": 4,
-            "value": 5
-          },
-          "expect": "0"
-        },
-        {
-          "name": "t14",
-          "args": {
-            "mat": [
-              [
-                5,
-                5,
-                5,
-                5
-              ],
-              [
-                5,
-                5,
-                5,
-                5
-              ]
-            ],
-            "m": 2,
-            "cols": 4,
-            "value": 6
-          },
-          "expect": "8"
-        }
-      ]
+ "version": 2,
+ "fnPrefix": "examB_",
+ "questions": {
+  "q2": {
+   "driver": "raw_main",
+   "mutation": "allowed",
+   "cases": [
+    {
+     "name": "case-01",
+     "stdin": "1\n5\n5\n",
+     "expect": "0\n0"
     },
-    "q3": {
-      "driver": "string_only",
-      "mutation": "forbidden",
-      "cases": [
-        {
-          "name": "t01",
-          "args": {
-            "s": "aab"
-          },
-          "expect": "4"
-        },
-        {
-          "name": "t02",
-          "args": {
-            "s": "abc"
-          },
-          "expect": "3"
-        },
-        {
-          "name": "t03",
-          "args": {
-            "s": "aaa"
-          },
-          "expect": "4"
-        },
-        {
-          "name": "t04",
-          "args": {
-            "s": "a"
-          },
-          "expect": "1"
-        },
-        {
-          "name": "t05",
-          "args": {
-            "s": "abab"
-          },
-          "expect": "6"
-        },
-        {
-          "name": "t06",
-          "args": {
-            "s": "racecar"
-          },
-          "expect": "10"
-        },
-        {
-          "name": "t07",
-          "args": {
-            "s": "banana"
-          },
-          "expect": "11"
-        },
-        {
-          "name": "t08",
-          "args": {
-            "s": "aabb"
-          },
-          "expect": "6"
-        },
-        {
-          "name": "t09",
-          "args": {
-            "s": "xyzzyx"
-          },
-          "expect": "10"
-        },
-        {
-          "name": "t10",
-          "args": {
-            "s": "abcba"
-          },
-          "expect": "7"
-        },
-        {
-          "name": "t11",
-          "args": {
-            "s": "zz"
-          },
-          "expect": "2"
-        },
-        {
-          "name": "t12",
-          "args": {
-            "s": "abcabc"
-          },
-          "expect": "8"
-        },
-        {
-          "name": "t13",
-          "args": {
-            "s": "deeee"
-          },
-          "expect": "9"
-        },
-        {
-          "name": "t14",
-          "args": {
-            "s": "mississippi"
-          },
-          "expect": "33"
-        }
-      ]
+    {
+     "name": "case-02",
+     "stdin": "1\n2\n6\n",
+     "expect": "1\n2"
     },
-    "q4": {
-      "driver": "int_only",
-      "mutation": "forbidden",
-      "cases": [
-        {
-          "name": "t01",
-          "args": {
-            "value": 0
-          },
-          "expect": "1"
-        },
-        {
-          "name": "t02",
-          "args": {
-            "value": 1
-          },
-          "expect": "1"
-        },
-        {
-          "name": "t03",
-          "args": {
-            "value": 2
-          },
-          "expect": "3"
-        },
-        {
-          "name": "t04",
-          "args": {
-            "value": 3
-          },
-          "expect": "5"
-        },
-        {
-          "name": "t05",
-          "args": {
-            "value": 4
-          },
-          "expect": "11"
-        },
-        {
-          "name": "t06",
-          "args": {
-            "value": 5
-          },
-          "expect": "21"
-        },
-        {
-          "name": "t07",
-          "args": {
-            "value": 6
-          },
-          "expect": "43"
-        },
-        {
-          "name": "t08",
-          "args": {
-            "value": 7
-          },
-          "expect": "85"
-        },
-        {
-          "name": "t09",
-          "args": {
-            "value": 8
-          },
-          "expect": "171"
-        },
-        {
-          "name": "t10",
-          "args": {
-            "value": 10
-          },
-          "expect": "683"
-        },
-        {
-          "name": "t11",
-          "args": {
-            "value": 12
-          },
-          "expect": "2731"
-        },
-        {
-          "name": "t12",
-          "args": {
-            "value": 15
-          },
-          "expect": "21845"
-        },
-        {
-          "name": "t13",
-          "args": {
-            "value": 18
-          },
-          "expect": "174763"
-        },
-        {
-          "name": "t14",
-          "args": {
-            "value": 20
-          },
-          "expect": "699051"
-        }
-      ]
+    {
+     "name": "case-03",
+     "stdin": "1\n4\n6\n",
+     "expect": "1\n4"
+    },
+    {
+     "name": "case-04",
+     "stdin": "11\n1 1 1 2 4 4 4 4 6 6 7\n1 1 1 2 4 4 4 4 6 6 7\n",
+     "expect": "0\n0 0 0 0 0 0 0 0 0 0 0"
+    },
+    {
+     "name": "case-05",
+     "stdin": "9\n1 1 1 1 1 1 1 1 1\n9 9 9 9 9 9 9 9 9\n",
+     "expect": "9\n1 1 1 1 1 1 1 1 1"
+    },
+    {
+     "name": "case-06",
+     "stdin": "5\n2 4 5 7 7\n1 1 3 4 6\n",
+     "expect": "4\n2 5 7 7 0"
+    },
+    {
+     "name": "case-07",
+     "stdin": "9\n2 2 3 3 4 5 6 7 7\n2 2 3 4 4 5 5 5 6\n",
+     "expect": "3\n3 7 7 0 0 0 0 0 0"
+    },
+    {
+     "name": "case-08",
+     "stdin": "5\n1 3 4 5 7\n2 3 4 4 6\n",
+     "expect": "3\n1 5 7 0 0"
+    },
+    {
+     "name": "case-09",
+     "stdin": "11\n1 2 3 3 4 4 5 6 7 7 7\n1 1 2 2 3 3 4 4 6 6 7\n",
+     "expect": "3\n5 7 7 0 0 0 0 0 0 0 0"
+    },
+    {
+     "name": "case-10",
+     "stdin": "8\n2 2 3 4 4 6 7 7\n2 2 2 2 2 4 5 6\n",
+     "expect": "4\n3 4 7 7 0 0 0 0"
+    },
+    {
+     "name": "case-11",
+     "stdin": "9\n1 1 3 3 4 5 6 6 7\n1 1 1 2 2 2 3 4 7\n",
+     "expect": "4\n3 5 6 6 0 0 0 0 0"
+    },
+    {
+     "name": "case-12",
+     "stdin": "11\n2 2 3 4 5 5 6 6 6 6 7\n1 1 2 3 4 4 6 6 6 7 7\n",
+     "expect": "4\n2 5 5 6 0 0 0 0 0 0 0"
+    },
+    {
+     "name": "case-13",
+     "stdin": "11\n1 2 2 3 3 4 4 4 4 6 6\n1 2 2 4 4 5 5 5 5 7 7\n",
+     "expect": "6\n3 3 4 4 6 6 0 0 0 0 0"
+    },
+    {
+     "name": "case-14",
+     "stdin": "11\n1 1 1 2 4 5 5 5 5 6 7\n1 1 1 1 2 3 3 4 6 7 7\n",
+     "expect": "4\n5 5 5 5 0 0 0 0 0 0 0"
+    },
+    {
+     "name": "case-15",
+     "stdin": "2\n3 3\n4 4\n",
+     "expect": "2\n3 3"
+    },
+    {
+     "name": "case-16",
+     "stdin": "5\n1 2 4 5 7\n1 3 5 6 7\n",
+     "expect": "2\n2 4 0 0 0"
+    },
+    {
+     "name": "case-17",
+     "stdin": "9\n1 3 3 4 4 4 5 7 7\n1 2 2 4 4 4 5 6 7\n",
+     "expect": "3\n3 3 7 0 0 0 0 0 0"
+    },
+    {
+     "name": "case-18",
+     "stdin": "10\n1 1 2 2 3 4 4 5 7 7\n1 1 2 3 3 6 6 6 6 6\n",
+     "expect": "6\n2 4 4 5 7 7 0 0 0 0"
+    },
+    {
+     "name": "case-19",
+     "stdin": "7\n3 3 3 4 6 6 7\n3 3 4 5 5 5 6\n",
+     "expect": "3\n3 6 7 0 0 0 0"
+    },
+    {
+     "name": "case-20",
+     "stdin": "9\n1 1 1 2 3 3 4 6 6\n1 1 2 2 5 5 5 5 7\n",
+     "expect": "6\n1 3 3 4 6 6 0 0 0"
+    },
+    {
+     "name": "case-21",
+     "stdin": "10\n2 2 4 4 5 5 6 6 7 7\n1 1 1 3 4 6 6 6 6 6\n",
+     "expect": "7\n2 2 4 5 5 7 7 0 0 0"
+    },
+    {
+     "name": "case-22",
+     "stdin": "2\n1 1\n1 2\n",
+     "expect": "1\n1 0"
+    },
+    {
+     "name": "case-23",
+     "stdin": "7\n1 2 2 3 3 4 5\n2 2 3 4 5 6 6\n",
+     "expect": "2\n1 3 0 0 0 0 0"
+    },
+    {
+     "name": "case-24",
+     "stdin": "5\n1 4 7 7 7\n1 3 4 7 7\n",
+     "expect": "1\n7 0 0 0 0"
     }
+   ]
+  },
+  "q3": {
+   "driver": "raw_main",
+   "mutation": "allowed",
+   "cases": [
+    {
+     "name": "case-01",
+     "stdin": "1\na\n",
+     "expect": "1\na"
+    },
+    {
+     "name": "case-02",
+     "stdin": "2\naa\n",
+     "expect": "1\na"
+    },
+    {
+     "name": "case-03",
+     "stdin": "2\nab\n",
+     "expect": "2\nab"
+    },
+    {
+     "name": "case-04",
+     "stdin": "2\nba\n",
+     "expect": "2\nba"
+    },
+    {
+     "name": "case-05",
+     "stdin": "4\nabba\n",
+     "expect": "2\nab"
+    },
+    {
+     "name": "case-06",
+     "stdin": "6\nabbaca\n",
+     "expect": "3\nbac"
+    },
+    {
+     "name": "case-07",
+     "stdin": "8\ncbacdcbc\n",
+     "expect": "4\nbacd"
+    },
+    {
+     "name": "case-08",
+     "stdin": "5\nbbbaa\n",
+     "expect": "2\nba"
+    },
+    {
+     "name": "case-09",
+     "stdin": "7\nabababa\n",
+     "expect": "2\nab"
+    },
+    {
+     "name": "case-10",
+     "stdin": "4\ndcba\n",
+     "expect": "4\ndcba"
+    },
+    {
+     "name": "case-11",
+     "stdin": "6\nabcabc\n",
+     "expect": "3\nabc"
+    },
+    {
+     "name": "case-12",
+     "stdin": "4\nzzzz\n",
+     "expect": "1\nz"
+    },
+    {
+     "name": "case-13",
+     "stdin": "7\ndbbaddb\n",
+     "expect": "3\nbad"
+    },
+    {
+     "name": "case-14",
+     "stdin": "1\na\n",
+     "expect": "1\na"
+    },
+    {
+     "name": "case-15",
+     "stdin": "1\nd\n",
+     "expect": "1\nd"
+    },
+    {
+     "name": "case-16",
+     "stdin": "6\ncaaccd\n",
+     "expect": "2\nca"
+    },
+    {
+     "name": "case-17",
+     "stdin": "6\ncaacad\n",
+     "expect": "3\ncad"
+    },
+    {
+     "name": "case-18",
+     "stdin": "7\nbbdacdd\n",
+     "expect": "4\nbdac"
+    },
+    {
+     "name": "case-19",
+     "stdin": "5\ncddac\n",
+     "expect": "3\ndac"
+    },
+    {
+     "name": "case-20",
+     "stdin": "3\ncba\n",
+     "expect": "3\ncba"
+    },
+    {
+     "name": "case-21",
+     "stdin": "3\nddb\n",
+     "expect": "2\ndb"
+    },
+    {
+     "name": "case-22",
+     "stdin": "3\nadd\n",
+     "expect": "2\nad"
+    },
+    {
+     "name": "case-23",
+     "stdin": "6\ncbbddb\n",
+     "expect": "2\ncb"
+    },
+    {
+     "name": "case-24",
+     "stdin": "7\ndabcadb\n",
+     "expect": "4\ndabc"
+    }
+   ]
+  },
+  "q4": {
+   "driver": "raw_main",
+   "mutation": "allowed",
+   "cases": [
+    {
+     "name": "case-01",
+     "stdin": "1\n1\n",
+     "expect": "1"
+    },
+    {
+     "name": "case-02",
+     "stdin": "2\n1 1\n",
+     "expect": "1"
+    },
+    {
+     "name": "case-03",
+     "stdin": "2\n1 2\n",
+     "expect": "2"
+    },
+    {
+     "name": "case-04",
+     "stdin": "2\n2 1\n",
+     "expect": "1"
+    },
+    {
+     "name": "case-05",
+     "stdin": "4\n1 2 3 4\n",
+     "expect": "4"
+    },
+    {
+     "name": "case-06",
+     "stdin": "4\n4 3 2 1\n",
+     "expect": "1"
+    },
+    {
+     "name": "case-07",
+     "stdin": "4\n1 3 2 4\n",
+     "expect": "3"
+    },
+    {
+     "name": "case-08",
+     "stdin": "4\n1 2 2 3\n",
+     "expect": "3"
+    },
+    {
+     "name": "case-09",
+     "stdin": "4\n-3 -1 -2 0\n",
+     "expect": "3"
+    },
+    {
+     "name": "case-10",
+     "stdin": "5\n1 2 3 2 1\n",
+     "expect": "3"
+    },
+    {
+     "name": "case-11",
+     "stdin": "5\n5 1 4 2 3\n",
+     "expect": "1"
+    },
+    {
+     "name": "case-12",
+     "stdin": "4\n2 2 1 1\n",
+     "expect": "1"
+    },
+    {
+     "name": "case-13",
+     "stdin": "6\n5 -5 -5 5 -3 4\n",
+     "expect": "1"
+    },
+    {
+     "name": "case-14",
+     "stdin": "15\n2 -3 2 1 4 -2 -4 -5 4 3 -5 -3 5 2 -1\n",
+     "expect": "3"
+    },
+    {
+     "name": "case-15",
+     "stdin": "1\n3\n",
+     "expect": "1"
+    },
+    {
+     "name": "case-16",
+     "stdin": "12\n4 -1 -4 -4 3 -1 5 -3 2 3 0 -2\n",
+     "expect": "2"
+    },
+    {
+     "name": "case-17",
+     "stdin": "9\n4 5 -1 -1 0 4 -3 3 0\n",
+     "expect": "2"
+    },
+    {
+     "name": "case-18",
+     "stdin": "1\n-1\n",
+     "expect": "1"
+    },
+    {
+     "name": "case-19",
+     "stdin": "2\n-3 -5\n",
+     "expect": "1"
+    },
+    {
+     "name": "case-20",
+     "stdin": "10\n3 2 1 2 1 4 3 5 1 -2\n",
+     "expect": "3"
+    },
+    {
+     "name": "case-21",
+     "stdin": "11\n-2 -3 -4 -2 2 5 1 -2 -4 1 -3\n",
+     "expect": "3"
+    },
+    {
+     "name": "case-22",
+     "stdin": "14\n1 2 -4 2 -5 2 1 4 -4 -5 2 -2 3 0\n",
+     "expect": "3"
+    },
+    {
+     "name": "case-23",
+     "stdin": "16\n-3 5 -3 2 5 0 -5 -1 1 1 0 3 5 0 4 -4\n",
+     "expect": "2"
+    },
+    {
+     "name": "case-24",
+     "stdin": "1\n-4\n",
+     "expect": "1"
+    }
+   ]
   }
-}
-</script>
+ }
+}</script>
 <script>
 "use strict";
 "use strict";
@@ -1753,7 +1501,7 @@ const ExamDrivers = (() => {
   return {normalizeManifest, validateArgs, validateCases, cString, cChar, formatArgs, driverFor, driverStdin, splitRawOutputs, isRawDriver:isRaw};
 })();
 
-const Q1_KEY = JSON.parse(decodeURIComponent(atob("JTdCJTIyYSUyMiUzQSUyMCU3QiUyMnRpbWUlMjIlM0ElMjAlMjIlQ0UlOTglMjhuJUMyJUIyJTI5JTIyJTJDJTIwJTIyc3BhY2UlMjIlM0ElMjAlMjIlQ0UlOTglMjhuJTI5JTIyJTdEJTJDJTIwJTIyYiUyMiUzQSUyMCU3QiUyMnRpbWUlMjIlM0ElMjAlMjIlQ0UlOTglMjhuJUMyJUIyJTIwbG9nJTIwbiUyOSUyMiUyQyUyMCUyMnNwYWNlJTIyJTNBJTIwJTIyJUNFJTk4JTI4MSUyOSUyMiU3RCUyQyUyMCUyMmMlMjIlM0ElMjAlN0IlMjJ0aW1lJTIyJTNBJTIwJTIyJUNFJTk4JTI4biUyOSUyMiUyQyUyMCUyMnNwYWNlJTIyJTNBJTIwJTIyJUNFJTk4JTI4MSUyOSUyMiU3RCU3RA==")));
+const Q1_KEY = JSON.parse(decodeURIComponent(atob("JTdCJTIyYSUyMiUzQSUyMCU3QiUyMnRpbWUlMjIlM0ElMjAlMjIlQ0UlOTgoJUUyJTg4JTlBbiUyMCVDMiVCNyUyMGxvZyUyMG4pJTIyJTJDJTIwJTIyc3BhY2UlMjIlM0ElMjAlMjIlQ0UlOTgoMSklMjIlN0QlMkMlMjAlMjJiJTIyJTNBJTIwJTdCJTIydGltZSUyMiUzQSUyMCUyMiVDRSU5OChuJTIwbG9nJTIwbiklMjIlMkMlMjAlMjJzcGFjZSUyMiUzQSUyMCUyMiVDRSU5OChsb2clMjBuKSUyMiU3RCUyQyUyMCUyMmMlMjIlM0ElMjAlN0IlMjJ0aW1lJTIyJTNBJTIwJTIyJUNFJTk4KG4pJTIyJTJDJTIwJTIyc3BhY2UlMjIlM0ElMjAlMjIlQ0UlOTgobiklMjIlN0QlN0Q=")));
 /* Every exam page shares this ONE origin (blueapple12.github.io), so
    localStorage is shared across /exam/<n>/ paths too. Key everything to
    the page's own path, or exam 2's save would clobber exam 1's. */
@@ -1766,7 +1514,6 @@ const SKELETONS = {
   q2: `#include <stdio.h>
 #include <stdlib.h>
 
-#define N 4
 #define DONT_KNOW "I_dont_know"
 
 void printIDontKnow() {
@@ -1774,35 +1521,48 @@ void printIDontKnow() {
     exit(0);
 }
 
-int examT_q2(int mat[][N], int m, int x);
+int examB_q2(int* a, int* b, int n);
 
 int main(void) {
     // uncomment next line if you don't know the answer
     // printIDontKnow();
 
-    int m;
-    if (scanf("%d", &m) != 1) return 1;
-    int (*mat)[N] = malloc(m * sizeof(*mat));
-    if (!mat) return 1;
-    for (int i = 0; i < m; i++) {
-        for (int j = 0; j < N; j++) {
-            if (scanf("%d", &mat[i][j]) != 1) {
-                free(mat);
-                return 1;
-            }
-        }
-    }
-    int x;
-    if (scanf("%d", &x) != 1) {
-        free(mat);
+    int n;
+    if (scanf("%d", &n) != 1) return 1;
+    int* a = malloc(n * sizeof(int));
+    int* b = malloc(n * sizeof(int));
+    if (!a || !b) {
+        free(a);
+        free(b);
         return 1;
     }
-    printf("%d", examT_q2(mat, m, x));
-    free(mat);
+    for (int i = 0; i < n; i++) {
+        if (scanf("%d", &a[i]) != 1) {
+            free(a);
+            free(b);
+            return 1;
+        }
+    }
+    for (int i = 0; i < n; i++) {
+        if (scanf("%d", &b[i]) != 1) {
+            free(a);
+            free(b);
+            return 1;
+        }
+    }
+    int result = examB_q2(a, b, n);
+    printf("%d\\n", result);
+    for (int i = 0; i < n; i++) {
+        printf("%d", a[i]);
+        if (i < n - 1)
+            printf(" ");
+    }
+    free(a);
+    free(b);
     return 0;
 }
 
-int examT_q2(int mat[][N], int m, int x) {
+int examB_q2(int* a, int* b, int n) {
     // write your code here
     return 0;
 }`,
@@ -1816,7 +1576,7 @@ void printIDontKnow() {
     exit(0);
 }
 
-int examT_q3(char* s);
+int examB_q3(char* s, char* p);
 
 int main(void) {
     // uncomment next line if you don't know the answer
@@ -1830,12 +1590,21 @@ int main(void) {
         free(s);
         return 1;
     }
-    printf("%d\\n", examT_q3(s));
+    char* p = malloc((n + 1) * sizeof(char));
+    if (!p) {
+        free(s);
+        return 1;
+    }
+    p[0] = '\\0';
+    int result = examB_q3(s, p);
+    printf("%d\\n", result);
+    printf("%s", p);
     free(s);
+    free(p);
     return 0;
 }
 
-int examT_q3(char* s) {
+int examB_q3(char* s, char* p) {
     // write your code here
     return 0;
 }`,
@@ -1849,7 +1618,7 @@ void printIDontKnow() {
     exit(0);
 }
 
-int examT_q4(int n);
+int examB_q4(int* arr, int n);
 
 int main(void) {
     // uncomment next line if you don't know the answer
@@ -1857,75 +1626,62 @@ int main(void) {
 
     int n;
     if (scanf("%d", &n) != 1) return 1;
-
-    printf("%d", examT_q4(n));
+    int* arr = malloc(n * sizeof(int));
+    if (!arr) return 1;
+    for (int i = 0; i < n; i++) {
+        if (scanf("%d", &arr[i]) != 1) {
+            free(arr);
+            return 1;
+        }
+    }
+    printf("%d", examB_q4(arr, n));
+    free(arr);
     return 0;
 }
 
-int examT_q4(int n) {
+int examB_q4(int* arr, int n) {
     // write your code here
     return 0;
-}`
+}`,
 };
 
 
 /* ==== EXAM-SPECIFIC: SOLUTIONS (replace) ==== */
 const SOLUTIONS = {
   q2: {
-    archetype: "חיפוש בינארי לגבול בכל שורה בנפרד",
-    complexity: "זמן Θ(m · log N) · מקום Θ(1)",
-    code: `int examT_q2(int mat[][N], int m, int x) {
-    int total = 0;
-    for (int i = 0; i < m; i++) {
-        int low = 0, high = N - 1, cnt = 0;
-        while (low <= high) {
-            int mid = low + (high - low) / 2;
-            if (mat[i][mid] < x) {
-                cnt = mid + 1;
-                low = mid + 1;
-            } else {
-                high = mid - 1;
-            }
-        }
-        total += cnt;
+    archetype: "תחזית 3 · Codex · שאלה 2",
+    complexity: "ראו את דף השאלות",
+    code: `int examB_q2(int* a,int* b,int n){
+    int i=0,j=0,w=0;
+    while(i<n){
+        while(j<n && b[j]<a[i])j++;
+        if(j<n && b[j]==a[i]){i++;j++;}
+        else a[w++]=a[i++];
     }
-    return total;
+    for(int k=w;k<n;k++)a[k]=0;
+    return w;
 }`
   },
   q3: {
-    archetype: "מסכת זוגיות נצברת מכל התחלה — בדיוק ביט אחד דלוק",
-    complexity: "זמן O(n²) · מקום נוסף O(1)",
-    code: `int examT_q3(char* s) {
-    int n = 0;
-    while (s[n] != '\\0') {
-        n++;
+    archetype: "תחזית 3 · Codex · שאלה 3",
+    complexity: "ראו את דף השאלות",
+    code: `int examB_q3(char* s,char* p){
+    int last[26],left=0,best=0,start=0;
+    for(int x=0;x<26;x++)last[x]=-1;
+    for(int i=0;s[i];i++){
+        int x=s[i]-'a';if(last[x]>=left)left=last[x]+1;last[x]=i;
+        if(i-left+1>best){best=i-left+1;start=left;}
     }
-    int total = 0;
-    for (int i = 0; i < n; i++) {
-        int mask = 0;
-        for (int j = i; j < n; j++) {
-            mask ^= 1 << (s[j] - 'a');
-            if (mask != 0 && (mask & (mask - 1)) == 0) {
-                total++;
-            }
-        }
-    }
-    return total;
+    for(int i=0;i<best;i++){p[i]=s[start+i];}
+    p[best]='\\0';return best;
 }`
   },
   q4: {
-    archetype: "נוסחת נסיגה f(n) = f(n-1) + 2f(n-2) — דומינו אנכי, זוג אופקי, או ריבוע",
-    complexity: "אין דרישת סיבוכיות",
-    code: `int examT_q4(int n) {
-    if (n == 0) {
-        return 1;
-    }
-    if (n == 1) {
-        return 1;
-    }
-    return examT_q4(n - 1) + 2 * examT_q4(n - 2);
-}`
-  }
+    archetype: "תחזית 3 · Codex · שאלה 4",
+    complexity: "ראו את דף השאלות",
+    code: `int prefix_max(int* a,int n){if(n==1)return a[0];int m=prefix_max(a,n-1);return m>a[n-1]?m:a[n-1];}
+int examB_q4(int* arr,int n){if(n<2)return n;return examB_q4(arr,n-1)+(arr[n-1]>prefix_max(arr,n-1));}`
+  },
 };
 
 /* ==== /END SOLUTIONS ==== */
